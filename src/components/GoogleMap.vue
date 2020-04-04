@@ -13,7 +13,7 @@ export default {
   props: ['parentID'],
   data () {
     return {
-      apiKey: 'AIzaSyD7YPeo5WIQeN-FkyWnsyBr0j8lohXctZA',
+      apiKey: '',
       google: null,
       map: null,
       geocoder: null,
