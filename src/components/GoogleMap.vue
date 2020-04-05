@@ -13,7 +13,7 @@ export default {
   props: ['parentID'],
   data () {
     return {
-      apiKey: '',
+      apiKey: process.env.GOOGLE_MAP_API_KEY,
       google: null,
       map: null,
       geocoder: null,
