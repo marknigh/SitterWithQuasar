@@ -1,0 +1,46 @@
+{
+  "name": "stegensitter",
+  "version": "0.0.1",
+  "description": "Best Sitters in the woods",
+  "productName": "Ste Gen Sitter",
+  "cordovaId": "org.stegen.sitter",
+  "author": "Mark Nigh",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue src",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@quasar/cli": "^1.0.0-rc.2",
+    "@quasar/extras": "^1.1.2",
+    "firebase": "^5.8.2",
+    "quasar": "^1.0.0-rc.4",
+    "vue": "^2.6.7",
+    "vue-template-compiler": "^2.6.7",
+    "vuefire": "^2.0.0",
+    "vuelidate": "^0.7.4",
+    "vuex-persistedstate": "^2.5.4"
+  },
+  "devDependencies": {
+    "@quasar/app": "^1.0.0-rc.6",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.10.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-vue": "^5.0.0",
+    "strip-ansi": "=3.0.1"
+  },
+  "engines": {
+    "node": ">= 8.9.0",
+    "npm": ">= 5.6.0",
+    "yarn": ">= 1.6.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "resolutions": {
+    "ajv": "6.8.1"
+  }
+}
