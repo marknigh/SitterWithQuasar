@@ -49,7 +49,7 @@
 
 <script>
 import { date } from 'quasar'
-import { createJob } from '../utils/jobs'
+import { db } from '../boot/firebase'
 import { required } from 'vuelidate/lib/validators'
 
 export default {
@@ -115,22 +115,28 @@ export default {
     }
   },
   methods: {
-    saveJob () {
+    async saveJob () {
       this.$v.$touch()
       if (this.$v.$invalid) {
         this.$v.$touch()
       } else {
         const newDate = date.buildDate({ year: Number(this.sDate.substr(0, 4)), month: Number(this.sDate.substr(5, 2)), date: Number(this.sDate.substr(8, 2)) })
         this.newJob.startDate = newDate
-        createJob(this.newJob).then(() => {
+        try {
+          let docReference = await db.collection('Jobs').add(this.newJob)
           this.$q.notify({
             message: 'Your Job Was Save',
             icon: 'eva-done-all-outline',
-            position: 'center',
+            position: 'bottom',
             color: 'secondary',
-            timeout: 1000
+            timeout: 2000
           })
-        })
+          setTimeout(() => {
+            this.$router.push({ name: 'editJob', params: { id: docReference.id } })
+          }, 3000)
+        } catch (error) {
+          console.log('error: ', error)
+        }
       }
     }
   }

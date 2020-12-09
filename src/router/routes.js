@@ -7,10 +7,10 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') },
       { path: '/parent/sitters', component: () => import('pages/p_sitters.vue') },
       { path: '/parent/sitters/details', name: 'sitterDetails', props: true, component: () => import('pages/p_sitterdetails.vue') },
+      { path: '/parent/sitters/reviews', name: 'sitterReviews', props: true, component: () => import('pages/p_sitterReviews.vue') },
       { path: '/parent/profile', component: () => import('pages/p_profile.vue') },
       { path: '/parent/jobs', component: () => import('pages/p_jobs.vue') },
       { path: '/parent/jobs/editjob', name: 'editJob', props: true, component: () => import('pages/p_editjob.vue') },
-      { path: '/parent/writereview', name: 'writeReview', props: true, component: () => import('pages/p_writereview.vue') },
       { path: '/parent/newjob', component: () => import('pages/p_newjob.vue') }
     ]
   }, {
@@ -30,7 +30,9 @@ const routes = [
   },
   { path: '/', component: () => import('pages/Login.vue'), meta: { requiresAuth: false } },
   { path: '/register', component: () => import('pages/Register.vue') },
-  { path: '/register-local-user', component: () => import('pages/LoginRegister') }
+  { path: '/register-local-user', component: () => import('pages/LoginRegister') },
+  { path: '/register-parent', component: () => import('pages/p_Register.vue') },
+  { path: '/register-sitter', component: () => import('pages/s_Register.vue') }
 ]
 
 // Always leave this as last one

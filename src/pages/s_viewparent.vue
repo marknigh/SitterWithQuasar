@@ -40,7 +40,7 @@
         </div>
 
         <div class="text-center">
-          <q-chip dense square><q-avatar color="primary" text-color="white">{{ jobs.length }}</q-avatar> Jobs Created</q-chip>
+          <q-chip dense square><q-avatar color="primary" text-color="white">{{ numberOfJobsCreated }}</q-avatar> Jobs Created</q-chip>
           <q-chip dense square><q-avatar color="secondary" text-color="white">{{ numberOfAwardedJobs }}</q-avatar> Jobs Awarded</q-chip>
         </div>
 
@@ -59,13 +59,17 @@ export default {
   props: ['parent'],
   data () {
     return {
-      jobs: []
+      jobs: [],
+      numberOfJobsCreated: undefined
     }
   },
-  firestore () {
-    return {
-      jobs: db.collection('Jobs').where('parentID', '==', this.parent.id)
-    }
+  async created () {
+    let querySnapShot = await db.collection('Jobs').where('parentID', '==', this.parent.id).get()
+    this.numberOfJobsCreated = querySnapShot.size
+    querySnapShot.forEach((document) => {
+      let parent = document.data()
+      this.jobs.push(parent)
+    })
   },
   filters: {
     displayDate (value) {

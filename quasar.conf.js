@@ -70,7 +70,9 @@ module.exports = function (ctx) {
         'QBanner',
         'QDialog',
         'QSpace',
-        'QBar'
+        'QBar',
+        'QFab',
+        'QFabAction'
       ],
 
       directives: [

@@ -13,12 +13,12 @@ export default {
   props: ['parentID'],
   data () {
     return {
-      apiKey: process.env.GOOGLE_MAP_API_KEY,
+      apiKey: process.env.VUE_APP_GOOGLE_MAP_API_KEY,
       google: null,
       map: null,
       geocoder: null,
-      parentAddress: '',
       parent: '',
+      parentAddress: '',
       mapConfig: {
         zoom: 15,
         center: { lat: 38.627003, lng: -90.199402 }
@@ -27,13 +27,14 @@ export default {
   },
   async mounted () {
     try {
-      const parent = await this.$bind('parent', db.collection('Users').doc(this.parentID))
-      const address = parent.address + ' ' + parent.zip
+      let docRef = await db.collection('Users').doc(this.parentID).get()
+      this.parent = docRef.data()
+      this.parentAddress = this.parent.address + ' ' + this.parent.zip
       const google = await gmapsInit()
       const geocoder = new google.maps.Geocoder()
       const map = new google.maps.Map(this.$el, this.mapConfig)
 
-      geocoder.geocode({ address: address }, (results, status) => {
+      geocoder.geocode({ address: this.parentAddress }, (results, status) => {
         if (status !== 'OK' || !results[0]) {
           throw new Error(status)
         }
@@ -49,8 +50,6 @@ export default {
     } catch (error) {
       console.error(error)
     }
-  },
-  methods: {
   }
 }
 </script>

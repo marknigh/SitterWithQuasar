@@ -5,18 +5,26 @@
         <q-card flat>
 
           <q-card-section>
-            <h4 class="text-center text-weight-thin">Ste. Gen Register</h4>
+            <h4 class="text-center text-primary">Welcome</h4>
+            <h6 class="text-center text-body2">We see this is your time with us. Please take a moment so we can learn more about you!</h6>
+            <h6 class="text-center text-body2">Are you registering as a Parent or Sitter?</h6>
             <div class="row justify-around">
-              <q-radio class="text-center" v-model="type" val="sitter" label="Sitter" />
-              <q-radio class="text-center" v-model="type" val="parent" label="Parent" />
+              <q-option-group
+                :options="options"
+                type="radio"
+                v-model="type"
+                :error="typeError"
+              />
             </div>
           </q-card-section>
 
           <q-card-section>
-            <parent-register v-if="type == 'parent'" @completeReg="saveUser"/>
-            <sitter-register v-else-if="type == 'sitter'" @completeReg="saveUser" />
+            <q-banner v-if="typeError" dense class="bg-red text-white text-center"> Please Choose a Type! </q-banner>
           </q-card-section>
 
+          <q-card-section>
+            <q-btn color="primary" class="full-width" label="Next" @click="next()" />
+          </q-card-section>
         </q-card>
       </q-page>
     </q-page-container>
@@ -24,39 +32,39 @@
 </template>
 
 <script>
-import ParentRegister from '../components/ParentRegister'
-import SitterRegister from '../components/SitterRegister'
-import { LocalStorage } from 'quasar'
-import { createUserInDB, getUserDataRegister } from '../utils/auth'
+import { required } from 'vuelidate/lib/validators'
 
 export default {
-  name: 'ParentRegister',
-  components: {
-    'parent-register': ParentRegister,
-    'sitter-register': SitterRegister
-  },
+  name: 'Register',
   data () {
     return {
-      type: null
+      type: null,
+      options: [
+        { label: 'Sitter', value: 'sitter' },
+        { label: 'Parent', value: 'parent' }
+      ]
+    }
+  },
+  validations: {
+    type: { required }
+  },
+  computed: {
+    typeError () {
+      return (this.$v.type.$invalid && this.$v.type.$dirty)
     }
   },
   methods: {
-    saveUser (user) {
-      user.authKey = LocalStorage.getItem('reg_uid')
-      user.email = LocalStorage.getItem('reg_email')
-      user.type = this.type
-      createUserInDB(user).then((user) => {
-        getUserDataRegister(user).then((doc) => {
-          console.log('user => ', doc)
-          this.$store.commit('setUserKey', doc.id)
-          this.$store.commit('setCurrentUser', doc.data())
-          if (doc.data().type === 'sitter') {
-            this.$router.push('/sitter')
-          } else {
-            this.$router.push('/parent')
-          }
-        })
-      })
+    next (type) {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+      } else {
+        if (this.type === 'sitter') {
+          this.$router.push('/register-sitter')
+        } else {
+          this.$router.push('/register-parent')
+        }
+      }
     }
   }
 }

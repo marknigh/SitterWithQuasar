@@ -33,11 +33,19 @@ export default {
   data () {
     return {
       profile: {},
-      dateJoined: null
+      dateJoined: undefined
     }
   },
-  created () {
-    this.getProfile()
+  async created () {
+    try {
+      let docReference = await db.collection('Users').doc(this.$store.getters.getKey).get()
+      this.profile = docReference.data()
+      this.profile.id = docReference.id
+      this.dateJoined = 'Member Since: ' + date.formatDate(new Date(this.profile.dateJoined.seconds * 1000), 'MMMM DD, YYYY')
+      this.$store.commit('setCurrentLocation', this.profile.name + ' Profile')
+    } catch (error) {
+      console.log('error: ', error)
+    }
   },
   methods: {
     savedProfile () {
@@ -50,13 +58,6 @@ export default {
           color: 'secondary',
           timeout: 1000
         })
-      })
-    },
-    getProfile () {
-      db.collection('Users').doc(this.$store.getters.getKey).get().then((doc) => {
-        this.profile = doc.data()
-        this.profile.id = doc.id
-        this.dateJoined = 'Member Since: ' + date.formatDate(new Date(this.profile.dateJoined.seconds * 1000), 'MMMM DD, YYYY')
       })
     }
   }

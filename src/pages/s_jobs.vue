@@ -34,8 +34,6 @@
           <q-item-label caption> Applied: {{ job.applied ? job.applied.length : 0 }} <q-icon v-if="job.awarded" color="yellow" name="eva-award"/> </q-item-label>
         </q-item-section>
 
-        <q-separator spaced primary />
-
       </q-item>
 
     </q-list>
@@ -61,9 +59,10 @@ export default {
   components: {
     'parent-name': GetParentname
   },
-  mounted () {
-    this.$bind('jobs', db.collection('Jobs').where('active', '==', true)).then((data) => {
-      this.jobs = data
+  async created () {
+    const response = await db.collection('Jobs').where('active', '==', true).get()
+    response.forEach((doc) => {
+      this.jobs.push(doc.data())
     })
   },
   methods: {

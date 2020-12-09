@@ -26,21 +26,16 @@
     >
       <q-list>
         <q-item>
-          <q-item-section>
+          <q-item-section avatar>
             <q-avatar>
               <img :src="currentUser.photoURL ? currentUser.photoURL : '../assets/quasar-logo-full.svg'">
             </q-avatar>
           </q-item-section>
-        </q-item>
-        <q-item>
           <q-item-section>
-            <div class="row text-weight-bold">
-              {{ currentUser.name }}
-            </div>
-            <div class="row">
-              {{ currentUser.email }}
-            </div>
+              <q-item-label>{{ currentUser.name }} </q-item-label>
+              <q-item-label caption>{{ currentUser.email }} </q-item-label>
           </q-item-section>
+
         </q-item>
 
         <q-separator/>

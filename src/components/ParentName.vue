@@ -1,5 +1,5 @@
 <template>
-  <span> {{ name.name }}</span>
+  <span> {{ name }}</span>
 </template>
 
 <script>
@@ -10,12 +10,16 @@ export default {
   props: ['parentID'],
   data () {
     return {
-      name: {}
+      name: ''
     }
   },
-  firestore () {
-    return {
-      name: db.collection('Users').doc(this.parentID)
+  async created () {
+    const userRef = await db.collection('Users').doc(this.parentID)
+    const docRef = await userRef.get()
+    if (docRef.exists) {
+      this.name = docRef.data().name
+    } else {
+      this.name = 'Unknown'
     }
   }
 }

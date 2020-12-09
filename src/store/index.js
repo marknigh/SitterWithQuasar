@@ -15,7 +15,8 @@ export default function (/* { ssrContext } */) {
       userLoggedIn: null,
       key: null,
       type: null,
-      currentUser: {}
+      currentUser: {},
+      currentLocation: ''
     },
     mutations: {
       clearUser (state) {
@@ -35,6 +36,9 @@ export default function (/* { ssrContext } */) {
       },
       setCurrentUser (state, payload) {
         state.currentUser = payload
+      },
+      setCurrentLocation (state, payload) {
+        state.currentLocation = payload
       }
     },
     getters: {
@@ -49,6 +53,9 @@ export default function (/* { ssrContext } */) {
       },
       getCurrentUser: state => {
         return (state.currentUser)
+      },
+      getCurrentLocation: state => {
+        return (state.currentLocation)
       }
     },
     plugins: [createPersistedState()]

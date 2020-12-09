@@ -13,8 +13,6 @@
           </div>
         </q-item-section>
 
-        <q-separator spaced primary />
-
       </q-item>
 
     </q-list>
@@ -40,9 +38,16 @@ export default {
   components: {
     'parent-name': ParentName
   },
-  firestore () {
-    return {
-      reviews: db.collection('Reviews').where('sitter', '==', this.sitterKey)
+  async created () {
+    try {
+      let querySnapshot = await db.collection('Reviews').where('sitter', '==', this.sitterKey).get()
+      querySnapshot.forEach((document) => {
+        let review = document.data()
+        review.id = document.id
+        this.reviews.push(review)
+      })
+    } catch (error) {
+      console.log('error: ', error)
     }
   }
 }

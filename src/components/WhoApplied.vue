@@ -20,17 +20,20 @@ import { db } from '../boot/firebase'
 
 export default {
   name: 'WhoApplied',
-  props: ['who', 'job'],
+  props: {
+    who: {
+      type: {}
+    }
+  },
   data () {
     return {
       sitter: {},
       currentSitterKey: this.$store.getters.getKey
     }
   },
-  firestore () {
-    return {
-      sitter: db.collection('Users').doc(this.who)
-    }
+  async created () {
+    let docRef = await db.collecion('Users').doc(this.who)
+    this.sitter = docRef.data()
   }
 }
 </script>

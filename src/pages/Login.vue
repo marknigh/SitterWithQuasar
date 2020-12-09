@@ -79,6 +79,7 @@ export default {
             console.log('doc: ', doc.data())
             this.$store.commit('setUserKey', doc.id)
             this.$store.commit('setCurrentUser', doc.data())
+            this.$store.commit('setCurrentLocation', 'Home')
             if (doc.data().type === 'sitter') {
               this.$router.push('/sitter')
             } else {
@@ -103,6 +104,7 @@ export default {
               console.log('doc: ', doc.data())
               this.$store.commit('setUserKey', doc.id)
               this.$store.commit('setCurrentUser', doc.data())
+              this.$store.commit('setCurrentLocation', 'Home')
               if (doc.data().type === 'sitter') {
                 this.$router.push('/sitter')
               } else {

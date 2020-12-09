@@ -27,10 +27,9 @@ export default {
       currentSitterKey: this.$store.getters.getKey
     }
   },
-  firestore () {
-    return {
-      sitter: db.collection('Users').doc(this.who)
-    }
+  async created () {
+    let documentSnapshot = await db.collection('Users').doc(this.who).get()
+    this.sitter = documentSnapshot.data()
   }
 }
 </script>

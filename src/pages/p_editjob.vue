@@ -1,7 +1,6 @@
 <template>
   <q-page padding>
-
-    <div v-if="!isLoading">
+    <div v-if="isLoading == false">
       <div class="row">
         <q-input :readonly="disabledField" class="col" v-model="editJob.title" label="Title"></q-input>
       </div>
@@ -64,7 +63,6 @@
           <q-btn class="full-width" color="primary" label="save" @click="saveJob"/>
         </div>
     </div>
-
   </q-page>
 </template>
 
@@ -90,8 +88,22 @@ export default {
       isLoading: true
     }
   },
-  created () {
-    this.getJob()
+  async created () {
+    try {
+      let docRef = await db.collection('Jobs').doc(this.id).get()
+      this.editJob = docRef.data()
+      this.editJob.id = docRef.id
+      this.sDateDisplay = date.formatDate(this.editJob.startDate.toDate(), 'MM-DD-YYYY')
+      this.sDate = date.formatDate(this.editJob.startDate.toDate(), 'YYYY/MM/DD')
+      this.sTime = this.convertTime()
+      if (this.editJob.applied.length > 0) {
+        this.disabledField = true
+      }
+      this.$store.commit('setCurrentLocation', 'Edit Job')
+      this.isLoading = false
+    } catch (error) {
+      console.log('error: ', error)
+    }
   },
   watch: {
     sDate () {
@@ -113,10 +125,11 @@ export default {
         return this.sTime
       }
     },
-    saveJob () {
+    async saveJob () {
       const newDate = date.buildDate({ year: Number(this.sDate.substr(0, 4)), month: Number(this.sDate.substr(5, 2)), date: Number(this.sDate.substr(8, 2)) })
       this.editJob.startDate = newDate
-      updateJob(this.id, this.editJob).then(() => {
+      try {
+        await updateJob(this.id, this.editJob)
         this.$q.notify({
           message: 'Your Job Was Updated',
           icon: 'eva-checkmark-circle-2-outline',
@@ -124,7 +137,9 @@ export default {
           color: 'secondary',
           timeout: 1000
         })
-      })
+      } catch (err) {
+        console.log('err: ', err)
+      }
     },
     awardJob (who, editJob) {
       this.$q.dialog({
@@ -134,18 +149,6 @@ export default {
         awardJob(this.id, editJob, who).then(() => {
           console.log('all good')
         })
-      })
-    },
-    getJob () {
-      db.collection('Jobs').doc(this.id).onSnapshot((doc) => {
-        this.editJob = doc.data()
-        this.sDateDisplay = date.formatDate(this.editJob.startDate.toDate(), 'MM-DD-YYYY')
-        this.sDate = date.formatDate(this.editJob.startDate.toDate(), 'YYYY/MM/DD')
-        this.sTime = this.convertTime()
-        if (this.editJob.applied.length > 0) {
-          this.disabledField = true
-        }
-        this.isLoading = false
       })
     }
   }

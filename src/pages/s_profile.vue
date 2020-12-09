@@ -83,12 +83,13 @@ export default {
       file: null
     }
   },
-  created () {
-    return this.sitterID
-  },
-  firestore () {
-    return {
-      sitter: db.collection('Users').doc(this.$store.getters.getKey)
+  async created () {
+    try {
+      let docReference = await db.collection('Users').doc(this.$store.getters.getKey).get()
+      this.sitter = docReference.data()
+      this.sitter.id = docReference.id
+    } catch (error) {
+      console.log('error: ', error)
     }
   },
   computed: {

@@ -1,25 +1,26 @@
 <template>
   <q-page padding>
+    <div style="max-width: 350px">
 
-    <q-list highlight inset-separator>
+      <q-list highlight inset-separator>
 
-      <q-item clickable v-ripple v-for="sitter in sitters" :key="sitter.id" @click="sitterDetails(sitter)">
-        <q-item-section avatar>
-          <q-avatar>
-            <img :src="sitter.photoURL">
-          </q-avatar>
-        </q-item-section>
+        <q-item class="q-pa-md" clickable v-ripple v-for="sitter in sitters" :key="sitter.id" @click="sitterDetails(sitter)">
+          <q-item-section avatar>
+            <q-avatar>
+              <img :src="sitter.photoURL">
+            </q-avatar>
+          </q-item-section>
 
-        <q-item-section>
-          <q-item-label>{{ sitter.name }}</q-item-label>
-          <q-item-label caption>Grade: {{ sitter.grade }}</q-item-label>
-          <q-item-label caption>Age: {{ AgeCalculation(sitter.birthday) }}</q-item-label>
-        </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ sitter.name }}</q-item-label>
+            <q-item-label caption>Grade: {{ sitter.grade }}</q-item-label>
+            <q-item-label caption>Age: {{ AgeCalculation(sitter.birthday) }}</q-item-label>
+          </q-item-section>
 
-      </q-item>
+        </q-item>
 
-    </q-list>
-
+      </q-list>
+    </div>
   </q-page>
 </template>
 
@@ -33,10 +34,14 @@ export default {
       sitters: []
     }
   },
-  firestore () {
-    return {
-      sitters: db.collection('Users').where('type', '==', 'sitter')
-    }
+  async created () {
+    let querySnapshot = await db.collection('Users').where('type', '==', 'sitter').get()
+    querySnapshot.forEach((documentSnapshot) => {
+      let sitter = documentSnapshot.data()
+      sitter.id = documentSnapshot.id
+      this.$store.commit('setCurrentLocation', 'All Active Sitters')
+      this.sitters.push(sitter)
+    })
   },
   methods: {
     AgeCalculation (birthday) {
@@ -46,11 +51,8 @@ export default {
         return Math.abs(ageDate.getUTCFullYear() - 1970)
       }
     },
-    itemSubLabel (sitter) {
-      return ('Grade: ' + sitter.grade + ' ' + 'Age: ' + this.AgeCalculation(sitter.birthday))
-    },
-    sitterDetails (sitterInfo) {
-      this.$router.push({ name: 'sitterDetails', params: { sitter: sitterInfo } })
+    sitterDetails (sitter) {
+      this.$router.push({ name: 'sitterDetails', params: { sitter: sitter } })
     }
   }
 }

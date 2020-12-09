@@ -1,59 +1,58 @@
 <template>
   <q-layout>
-      <q-page-container>
-        <q-page class="flex flex-center">
-            <q-card flat class="my-card">
+    <q-page-container>
+      <q-page class="flex flex-center">
+          <q-card flat class="my-card">
 
-              <q-card-section>
-                <h4 class="text-center text-weight-thin">Ste. Gen Sitter</h4>
-                <h6 class="text-center text-weight-thin">Create Username & Password </h6>
-              </q-card-section>
+            <q-card-section>
+              <h6 class="text-center text-weight-thin">Register with a Username and Password</h6>
+            </q-card-section>
 
-              <q-card-section>
+            <q-card-section>
 
-                <q-input
-                  helper="Email Format"
-                  label="Username"
-                  v-model="username"
-                  bottom-slots error-message="A Username is Required" :error="userNameErrors">
-                    <template v-slot:before>
-                      <q-icon name="eva-person-outline" />
-                    </template>
-                </q-input>
+              <q-input
+                helper="Email Format"
+                label="Username"
+                v-model="username"
+                bottom-slots error-message="A Username is Required" :error="userNameErrors">
+                  <template v-slot:before>
+                    <q-icon name="eva-person-outline" />
+                  </template>
+              </q-input>
 
-                <q-input
-                  icon="lock"
-                  type="password"
-                  label="Password"
-                  v-model="password"
-                  bottom-slots error-message="A Password must be greater than 6 characters" :error="passwordErrors">
-                    <template v-slot:before>
-                      <q-icon name="eva-lock-outline" />
-                    </template>
-                </q-input>
+              <q-input
+                icon="lock"
+                type="password"
+                label="Password"
+                v-model="password"
+                bottom-slots error-message="A Password must be greater than 6 characters" :error="passwordErrors">
+                  <template v-slot:before>
+                    <q-icon name="eva-lock-outline" />
+                  </template>
+              </q-input>
 
-                <q-input
-                  icon="lock"
-                  type="password"
-                  label="Confirm Password"
-                  v-model="confirmPassword"
-                  bottom-slots error-message="Password do not match" :error="confirmPasswordErrors">
-                    <template v-slot:before>
-                      <q-icon name="eva-lock" />
-                    </template>
-                </q-input>
+              <q-input
+                icon="lock"
+                type="password"
+                label="Confirm Password"
+                v-model="confirmPassword"
+                bottom-slots error-message="Password do not match" :error="confirmPasswordErrors">
+                  <template v-slot:before>
+                    <q-icon name="eva-lock" />
+                  </template>
+              </q-input>
 
-              </q-card-section>
+            </q-card-section>
 
-              <q-card-actions>
-                  <q-btn color="primary" class="full-width" label="Register" @click="registerUser"/>
-              </q-card-actions>
+            <q-card-actions>
+                <q-btn color="primary" class="full-width" label="Register" @click="registerUser"/>
+            </q-card-actions>
 
-              <div class="text-center">Already Have An Account? <router-link to="/">Sign In</router-link></div>
+            <div class="text-center">Already Have An Account? <router-link to="/">Sign In</router-link></div>
 
-            </q-card>
-        </q-page>
-      </q-page-container>
+          </q-card>
+      </q-page>
+    </q-page-container>
   </q-layout>
 </template>
 

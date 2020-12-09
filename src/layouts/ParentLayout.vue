@@ -13,7 +13,7 @@
         </q-btn>
 
         <q-toolbar-title>
-          Ste. Gen Sitter
+          {{ currentLocation }}
         </q-toolbar-title>
 
       </q-toolbar>
@@ -25,7 +25,14 @@
       content-class="bg-grey-2"
     >
       <q-list>
-        <q-item-label header>{{ currentUser.name }}</q-item-label>
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar color="primary" text-color="white" icon="eva-person-outline" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ currentUser.name }}</q-item-label>
+            </q-item-section>
+        </q-item>
         <q-separator/>
         <q-item clickable tag="a" target="_blank" @click.native="profile()">
           <q-item-section avatar>
@@ -38,7 +45,7 @@
         </q-item>
         <q-item clickable tag="a" target="_blank" @click.native="listSitters()">
           <q-item-section avatar>
-            <q-icon name="eva-person-outline" />
+            <q-icon name="eva-people-outline" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Sitters</q-item-label>
@@ -95,6 +102,9 @@ export default {
   computed: {
     currentUser () {
       return this.$store.getters.getCurrentUser
+    },
+    currentLocation () {
+      return this.$store.getters.getCurrentLocation
     }
   },
   methods: {

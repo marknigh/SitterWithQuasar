@@ -2,8 +2,6 @@
   <div v-if="reviews.length > 0" class="col text-center block">
     <span> ({{ score }}) </span>
     <q-rating v-model="score" :max="10" color="primary" readonly/>
-    <span @click="showReviews"> <q-icon name="eva-chevron-down-outline"/></span>
-    <span @click="writeReview"> <q-icon name="eva-edit-2-outline"/></span>
   </div>
   <div v-else>
     <p class="col text-center block"> No Reviews Have Been Written </p>
@@ -15,25 +13,24 @@ import { db } from '../boot/firebase'
 
 export default {
   name: 'SitterRatingScore',
-  props: ['sitter'],
+  props: {
+    sitter: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       reviews: []
     }
   },
-  firestore () {
-    return {
-      reviews: db.collection('Reviews').where('sitter', '==', this.sitter)
-    }
-  },
-  methods: {
-    showReviews () {
-      console.log('showReviews')
-      this.$emit('showReviews')
-    },
-    writeReview () {
-      this.$emit('writeReview')
-    }
+  async created () {
+    let querySnapshot = await db.collection('Reviews').where('sitter', '==', this.sitter.id).get()
+    querySnapshot.forEach((documentSnapshot) => {
+      let review = documentSnapshot.data()
+      review.id = documentSnapshot.id
+      this.reviews.push(review)
+    })
   },
   computed: {
     score () {

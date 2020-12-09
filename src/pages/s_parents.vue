@@ -26,8 +26,17 @@ export default {
       parents: []
     }
   },
-  firestore: {
-    parents: db.collection('Users').where('type', '==', 'parent')
+  async created () {
+    try {
+      let querySnapshot = await db.collection('Users').where('type', '==', 'parent').get()
+      querySnapshot.forEach((document) => {
+        let parent = document.data()
+        parent.parentID = document.id
+        this.parents.push(parent)
+      })
+    } catch (error) {
+      console.log('error: ', error)
+    }
   },
   filters: {
     displayDate (value) {

@@ -42,23 +42,19 @@ export default {
   },
   data () {
     return {
-      viewJob: null,
+      viewJob: undefined,
       sitterKey: this.$store.getters.getKey,
-      sDateDisplay: null,
+      sDateDisplay: undefined,
       isLoading: true
     }
   },
-  created () {
-    this.getJob()
+  async created () {
+    let documentSnaphot = await db.collection('Jobs').doc(this.id).get()
+    this.viewJob = documentSnaphot.data()
+    this.sDateDisplay = date.formatDate(this.viewJob.startDate.toDate(), 'MM-DD-YYYY')
+    this.isLoading = false
   },
   methods: {
-    getJob () {
-      db.collection('Jobs').doc(this.id).onSnapshot((doc) => {
-        this.viewJob = doc.data()
-        this.sDateDisplay = date.formatDate(this.viewJob.startDate.toDate(), 'MM-DD-YYYY')
-        this.isLoading = false
-      })
-    },
     convertTime (time) {
       return convertTime(time)
     }
