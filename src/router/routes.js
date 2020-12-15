@@ -29,10 +29,10 @@ const routes = [
     ]
   },
   { path: '/', component: () => import('pages/Login.vue'), meta: { requiresAuth: false } },
-  { path: '/register', component: () => import('pages/Register.vue') },
-  { path: '/register-local-user', component: () => import('pages/LoginRegister') },
-  { path: '/register-parent', component: () => import('pages/p_Register.vue') },
-  { path: '/register-sitter', component: () => import('pages/s_Register.vue') }
+  { path: '/register-user-type', component: () => import('pages/RegisterUserType.vue') },
+  { path: '/register-local-user', component: () => import('pages/RegisterLocalAuthUser') },
+  { path: '/register-parent', component: () => import('pages/RegisterParent.vue') },
+  { path: '/register-sitter', component: () => import('pages/RegisterSitter.vue') }
 ]
 
 // Always leave this as last one

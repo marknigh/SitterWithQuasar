@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-card flat v-if="!isLoading">
+    <q-card flat v-if="isLoading == false">
       <q-card-section>
         <div class="text-h6 text-center">
           <parent-name :parentID="viewJob.parentID"></parent-name>
@@ -29,7 +29,7 @@
       </div>
 
       <div class="row q-pa-md" v-if="!viewJob.awarded">
-        <q-btn v-if="viewJob.applied.includes(sitterKey)" color="primary" class="full-width" label="Remove Me" @click="unApply(viewJob.id)" />
+        <q-btn v-if="viewJob.applied.includes(sitterKey)" color="primary" class="full-width" label="Remove Me" @click="unApply()" />
         <q-btn v-else color="primary" class="full-width" label="Apply" @click="apply()" />
       </div>
 
@@ -47,35 +47,46 @@ import firebase from 'firebase'
 
 export default {
   name: 'ViewJob',
-  props: ['id'],
+  props: {
+    id: {
+      type: String
+    }
+  },
   components: {
     'parent-name': ParentName,
     'who-applied': WhoApplied
   },
   data () {
     return {
-      viewJob: null,
+      viewJob: {},
       sitterKey: this.$store.getters.getKey,
       sDateDisplay: null,
       isLoading: true
     }
   },
-  created () {
-    this.getJob()
+  async created () {
+    try {
+      let docReference = await db.collection('Jobs').doc(this.id).get()
+      this.viewJob = docReference.data()
+      this.viewJob.id = docReference.id
+      this.sDateDisplay = date.formatDate(this.viewJob.startDate.toDate(), 'MM-DD-YYYY')
+      this.isLoading = false
+    } catch (error) {
+      console.log('error: ', error)
+    }
   },
   methods: {
-    apply () {
-      db.collection('Jobs').doc(this.id).update({ applied: firebase.firestore.FieldValue.arrayUnion(this.sitterKey) })
+    async apply () {
+      try {
+        await db.collection('Jobs').doc(this.id).update({ applied: firebase.firestore.FieldValue.arrayUnion(this.sitterKey) })
+        this.viewJob.applied.push(this.sitterKey)
+      } catch (error) {
+        console.log('error: ', error)
+      }
     },
-    unApply () {
-      db.collection('Jobs').doc(this.id).update({ applied: firebase.firestore.FieldValue.arrayRemove(this.sitterKey) })
-    },
-    getJob () {
-      db.collection('Jobs').doc(this.id).onSnapshot((doc) => {
-        this.viewJob = doc.data()
-        this.sDateDisplay = date.formatDate(this.viewJob.startDate.toDate(), 'MM-DD-YYYY')
-        this.isLoading = false
-      })
+    async unApply () {
+      await db.collection('Jobs').doc(this.id).update({ applied: firebase.firestore.FieldValue.arrayRemove(this.sitterKey) })
+      this.viewJob.applied.pop(this.sitterKey)
     },
     convertTime (time) {
       return convertTime(time)

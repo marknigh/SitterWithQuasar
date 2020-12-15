@@ -1,42 +1,54 @@
 <template>
-  <q-page v-if="reviews.length > 0" padding>
+  <q-page v-if="reviews.length > 0 && isLoading == false" padding>
     <q-list>
-
-      <q-item v-for="r in reviews" :key="r.id">
+      <q-item v-for="review in reviews" :key="review.id">
 
         <q-item-section>
-          <q-item-label> <parent-name :parentID="r.parentID" /> </q-item-label>
-          <q-item-label> {{ r.title }}</q-item-label>
-          <q-item-label caption lines="2">{{ r.review }}</q-item-label>
-          <div class="row no-wrap">
-            <q-rating v-model="r.rating" :max="10" color="primary" readonly/> ({{ r.rating }})
-          </div>
+          <q-item-label> {{ review.title }} </q-item-label>
+          <q-item-label> <q-rating v-model="review.rating" :max="10" color="accent" readonly> </q-rating> ({{ review.rating }}) </q-item-label>
+          <q-item-label> <q-avatar size="18px" color="info"> <q-icon name="person" /> </q-avatar> <parent-name :parentID="review.parentID" /> </q-item-label>
+          <q-item-label caption> Reviewed on {{ review.date | formatDate }} </q-item-label>
         </q-item-section>
 
       </q-item>
-
     </q-list>
   </q-page>
 
+  <q-page v-else-if="reviews.length == 0 && isLoading == false" class="flex flex-center">
+    <div class="text-h6 text-weight-thin">No Reviews Have Been Written About You</div>
+  </q-page>
+
   <q-page v-else class="flex flex-center">
-        <div class="text-h6 text-weight-thin">No Reviews Have Been Written About You</div>
+    <q-spinner
+      color="primary"
+      size="3rem"
+      :thickness="5"
+    />
   </q-page>
 </template>
 
 <script>
 import { db } from '../boot/firebase'
 import ParentName from '../components/ParentName'
+import { date } from 'quasar'
 
 export default {
   name: 'SitterReviews',
   data () {
     return {
       sitterKey: this.$store.getters.getKey,
-      reviews: []
+      reviews: [],
+      isLoading: true
     }
   },
   components: {
     'parent-name': ParentName
+  },
+  filters: {
+    formatDate: function (value) {
+      let convertDate = value.toDate()
+      return date.formatDate(convertDate, 'MMMM, DD YYYY')
+    }
   },
   async created () {
     try {
@@ -46,8 +58,10 @@ export default {
         review.id = document.id
         this.reviews.push(review)
       })
+      this.isLoading = false
     } catch (error) {
       console.log('error: ', error)
+      this.isLoading = false
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page padding v-if="isLoading == false">
 
     <q-list>
 
@@ -39,6 +39,12 @@
     </q-list>
 
   </q-page>
+  <q-page v-else class="flex flex-center">
+    <q-spinner
+      color="primary"
+      size="5rem"
+    />
+  </q-page>
 </template>
 
 <script>
@@ -53,17 +59,21 @@ export default {
       jobs: [],
       selectOptions: ['Won'],
       filter: '',
-      sitterKey: this.$store.getters.getKey
+      sitterKey: this.$store.getters.getKey,
+      isLoading: true
     }
   },
   components: {
     'parent-name': GetParentname
   },
   async created () {
-    const response = await db.collection('Jobs').where('active', '==', true).get()
-    response.forEach((doc) => {
-      this.jobs.push(doc.data())
+    const querySnapshot = await db.collection('Jobs').where('active', '==', true).get()
+    querySnapshot.forEach((doc) => {
+      let jobs = doc.data()
+      jobs.id = doc.id
+      this.jobs.push(jobs)
     })
+    this.isLoading = false
   },
   methods: {
     viewJob (job) {

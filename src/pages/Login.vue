@@ -9,9 +9,8 @@
               </q-card-section>
 
               <q-card-section>
-
                 <q-input
-                  helper="Email Format"
+                  type="email"
                   label="Username"
                   v-model="username">
                     <template v-slot:before>
@@ -20,7 +19,6 @@
                 </q-input>
 
                 <q-input
-                  icon="lock"
                   type="password"
                   label="Password"
                   v-model="password">
@@ -34,7 +32,7 @@
               <q-banner v-if="loginError" dense class="text-white bg-red"> Login Error </q-banner>
 
               <q-card-actions>
-                  <q-btn color="primary" class="full-width" label="Login" @click="loginUser()"/>
+                  <q-btn color="primary" class="full-width" label="Login" :loading="loading" @click="loginUser()"/>
               </q-card-actions>
 
               <div class="text-center">Don't have an Account? <router-link to="/register-local-user">Create One</router-link></div>
@@ -46,11 +44,11 @@
               </div>
 
               <q-card-actions>
-                  <q-btn color="red" icon="eva-google" left class="full-width" label="Login with Google" @click="loginWithGoogle"/>
+                <google-login />
               </q-card-actions>
 
               <q-card-actions>
-                  <q-btn color="blue" icon="eva-facebook" left class="full-width" label="Login with Facebook" @click="loginWithFacebook"/>
+                <facebook-login />
               </q-card-actions>
 
             </q-card>
@@ -60,23 +58,30 @@
 </template>
 
 <script>
-import { loginUserAuth, getUserData, loginUserAuthGoogle, loginUserAuthFacebook } from '../utils/auth'
+import { loginUserAuth, getUserData } from '../utils/auth'
+import GoogleLogin from '../components/GoogleLogin'
+import FacebookLogin from '../components/FacebookLogin.vue'
 
 export default {
   name: 'Login',
   data () {
     return {
-      loginError: false,
       username: '',
-      password: ''
+      password: '',
+      loading: false,
+      loginError: false
     }
+  },
+  components: {
+    'google-login': GoogleLogin,
+    'facebook-login': FacebookLogin
   },
   methods: {
     loginUser () {
+      this.loading = true
       loginUserAuth(this.username, this.password).then((userInfo) => {
         getUserData(userInfo.user.uid).then((snapshot) => {
           snapshot.forEach(doc => {
-            console.log('doc: ', doc.data())
             this.$store.commit('setUserKey', doc.id)
             this.$store.commit('setCurrentUser', doc.data())
             this.$store.commit('setCurrentLocation', 'Home')
@@ -87,59 +92,10 @@ export default {
             }
           })
         })
+        this.loading = false
       }).catch((error) => {
         console.log('error: ', error)
-        this.loginError = true
-      })
-    },
-    loginWithGoogle () {
-      loginUserAuthGoogle().then((userInfo) => {
-        getUserData(userInfo.user.uid).then((snapshot) => {
-          if (snapshot.empty) {
-            this.$q.localStorage.set('reg_email', userInfo.user.email)
-            this.$q.localStorage.set('reg_uid', userInfo.user.uid)
-            this.$router.push('/register')
-          } else {
-            snapshot.forEach(doc => {
-              console.log('doc: ', doc.data())
-              this.$store.commit('setUserKey', doc.id)
-              this.$store.commit('setCurrentUser', doc.data())
-              this.$store.commit('setCurrentLocation', 'Home')
-              if (doc.data().type === 'sitter') {
-                this.$router.push('/sitter')
-              } else {
-                this.$router.push('/parent')
-              }
-            })
-          }
-        })
-      }).catch((error) => {
-        console.log('error: ', error)
-        this.loginError = true
-      })
-    },
-    loginWithFacebook () {
-      loginUserAuthFacebook().then((userInfo) => {
-        getUserData(userInfo.user.uid).then((snapshot) => {
-          if (snapshot.empty) {
-            this.$q.localStorage.set('reg_email', userInfo.user.email)
-            this.$q.localStorage.set('reg_uid', userInfo.user.uid)
-            this.$router.push('/register')
-          } else {
-            snapshot.forEach(doc => {
-              console.log('doc: ', doc.data())
-              this.$store.commit('setUserKey', doc.id)
-              this.$store.commit('setCurrentUser', doc.data())
-              if (doc.data().type === 'sitter') {
-                this.$router.push('/sitter')
-              } else {
-                this.$router.push('/parent')
-              }
-            })
-          }
-        })
-      }).catch((error) => {
-        console.log('error: ', error)
+        this.loading = false
         this.loginError = true
       })
     }

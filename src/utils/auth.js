@@ -16,8 +16,13 @@ function loginUserAuth (email, password) {
   return firebase.auth().signInWithEmailAndPassword(email, password)
 }
 
-function loginUserAuthGoogle () {
-  return firebase.auth().signInWithPopup(googleProvider)
+function loginUserAuthGoogle (platform) {
+  if (platform.is.desktop) {
+    console.log(platform)
+    return firebase.auth().signInWithPopup(googleProvider)
+  } else {
+    return firebase.auth().signInWithRedirect(googleProvider)
+  }
 }
 
 function loginUserAuthFacebook () {

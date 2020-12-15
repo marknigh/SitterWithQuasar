@@ -14,7 +14,6 @@ function updateJob (id, job) {
 }
 
 function awardJob (id, job, name) {
-  console.log('jobs.js: ', id, job, name)
   return db.collection('Jobs').doc(id).update({ 'awarded': name })
 }
 

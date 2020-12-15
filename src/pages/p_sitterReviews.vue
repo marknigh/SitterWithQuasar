@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <parent-sitter-review-list :reviews="reviews" :sitter="sitter"/>
+    <parent-sitter-review-list v-if="!loading" :reviews="reviews" :sitter="sitter"/>
   </q-page>
 </template>
 
@@ -20,15 +20,21 @@ export default {
   },
   data () {
     return {
-      reviews: []
+      reviews: [],
+      loading: false
     }
   },
   async created () {
+    this.loading = true
+    this.$q.loading.show()
     let querySnapshot = await db.collection('Reviews').where('sitter', '==', this.sitter.id).get()
     querySnapshot.forEach((docRefence) => {
       this.reviews.push(docRefence.data())
     })
     this.$store.commit('setCurrentLocation', this.sitter.name + ' Reviews')
+    this.$q.loading.hide()
+    this.loading = false
   }
+
 }
 </script>

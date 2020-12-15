@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page v-if="!loading" padding>
     <q-input v-model="profile.email" label="Username" disabled :hint="dateJoined" />
     <q-input v-model="profile.name" label="Name" />
     <q-input v-model="profile.address" label="Address" />
@@ -18,22 +18,31 @@
 
     <q-checkbox v-model="profile.terms" label="Agree to Terms"></q-checkbox>
     <div class="q-pa-md">
-      <q-btn class="full-width" color="primary" label="save" @click="savedProfile"/>
+      <q-btn :loading="saving" class="full-width" color="primary" label="save" @click="savedProfile"/>
     </div>
+  </q-page>
+
+  <q-page v-else class="flex flex-center">
+    <q-spinner
+      color="primary"
+      size="3rem"
+      :thickness="5"
+    />
   </q-page>
 </template>
 
 <script>
 import { date } from 'quasar'
 import { db } from '../boot/firebase'
-import { UpdateUserProfile } from '../utils/profile'
 
 export default {
   name: 'p_profile',
   data () {
     return {
       profile: {},
-      dateJoined: undefined
+      dateJoined: undefined,
+      saving: false,
+      loading: true
     }
   },
   async created () {
@@ -42,15 +51,20 @@ export default {
       this.profile = docReference.data()
       this.profile.id = docReference.id
       this.dateJoined = 'Member Since: ' + date.formatDate(new Date(this.profile.dateJoined.seconds * 1000), 'MMMM DD, YYYY')
-      this.$store.commit('setCurrentLocation', this.profile.name + ' Profile')
+      this.$store.commit('setCurrentLocation', 'Your Profile')
+      this.loading = false
     } catch (error) {
       console.log('error: ', error)
+      this.loading = false
     }
   },
   methods: {
-    savedProfile () {
-      UpdateUserProfile(this.profile).then(() => {
+    async savedProfile () {
+      this.saving = true
+      try {
+        await db.collection('Users').doc(this.profile.id).set(this.profile)
         this.$store.commit('setCurrentUser', this.profile)
+        this.saving = false
         this.$q.notify({
           message: 'Your Profile Was Saved',
           icon: 'eva-checkmark-circle-2-outline',
@@ -58,7 +72,10 @@ export default {
           color: 'secondary',
           timeout: 1000
         })
-      })
+      } catch (error) {
+        console.log('error', error)
+        this.saving = false
+      }
     }
   }
 }

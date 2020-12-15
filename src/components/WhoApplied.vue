@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="isLoading == false">
     <q-chip v-if="this.who === job.awarded" icon-right="eva-award-outline">
       <q-avatar>
         <img :src="sitter.photoURL">
@@ -22,18 +22,28 @@ export default {
   name: 'WhoApplied',
   props: {
     who: {
-      type: {}
+      type: String
+    },
+    job: {
+      type: Object
     }
   },
   data () {
     return {
       sitter: {},
-      currentSitterKey: this.$store.getters.getKey
+      currentSitterKey: this.$store.getters.getKey,
+      isLoading: true
     }
   },
   async created () {
-    let docRef = await db.collecion('Users').doc(this.who)
-    this.sitter = docRef.data()
+    try {
+      let docRef = await db.collection('Users').doc(this.who).get()
+      this.sitter = docRef.data()
+      this.sitter.id = docRef.id
+      this.isLoading = false
+    } catch (error) {
+      console.log('error: ', error)
+    }
   }
 }
 </script>

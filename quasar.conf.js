@@ -72,7 +72,9 @@ module.exports = function (ctx) {
         'QSpace',
         'QBar',
         'QFab',
-        'QFabAction'
+        'QFabAction',
+        'QSkeleton',
+        'QParallax'
       ],
 
       directives: [
@@ -84,7 +86,8 @@ module.exports = function (ctx) {
         'Notify',
         'Dialog',
         'Loading',
-        'LocalStorage'
+        'LocalStorage',
+        'AppVisibility'
       ]
 
       // iconSet: 'ionicons-v4'

@@ -47,7 +47,7 @@
 
         <div class="row">
           <template v-for="who in editJob.applied">
-            <p-who-applied :who="who" :job="editJob" :key="who.id" @awardJob="awardJob(who, editJob)"></p-who-applied>
+            <p-who-applied :who="who" :job="editJob" :key="who.id" @awardJob="awardJob(who)"></p-who-applied>
           </template>
         </div>
 
@@ -60,7 +60,7 @@
         </div>
 
         <div class="q-pa-sm">
-          <q-btn class="full-width" color="primary" label="save" @click="saveJob"/>
+          <q-btn class="full-width" :disable="disabledField" color="primary" label="save" @click="saveJob"/>
         </div>
     </div>
   </q-page>
@@ -68,15 +68,15 @@
 
 <script>
 import { date } from 'quasar'
-import parentWhoApplied from '../components/P_WhoApplied'
-import { updateJob, awardJob } from '../utils/jobs'
+import ParentWhoApplied from '../components/ParentWhoApplied'
+import { updateJob } from '../utils/jobs'
 import { db } from '../boot/firebase'
 
 export default {
   name: 'EditJob',
   props: ['id'],
   components: {
-    'p-who-applied': parentWhoApplied
+    'p-who-applied': ParentWhoApplied
   },
   data () {
     return {
@@ -133,22 +133,25 @@ export default {
         this.$q.notify({
           message: 'Your Job Was Updated',
           icon: 'eva-checkmark-circle-2-outline',
-          position: 'center',
-          color: 'secondary',
+          position: 'top-right',
+          color: 'positive',
           timeout: 1000
         })
       } catch (err) {
         console.log('err: ', err)
       }
     },
-    awardJob (who, editJob) {
+    awardJob (who) {
       this.$q.dialog({
         title: 'Award a Job?',
-        message: 'Would you like to Award this Job. This can\'t be undone?'
-      }).onOk(() => {
-        awardJob(this.id, editJob, who).then(() => {
-          console.log('all good')
-        })
+        message: 'Would you like to Award this Job. This can NOT be undone?',
+        cancel: true
+      }).onOk(async () => {
+        console.log('who: ', who)
+        await db.collection('Jobs').doc(this.id).update({ 'awarded': who })
+        this.$set(this.editJob, 'awarded', who)
+      }).onCancel(() => {
+        console.log('pressed cancelled')
       })
     }
   }

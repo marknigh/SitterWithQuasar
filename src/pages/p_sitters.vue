@@ -1,9 +1,7 @@
 <template>
-  <q-page padding>
-    <div style="max-width: 350px">
+  <q-page v-if="!loading" padding>
 
       <q-list highlight inset-separator>
-
         <q-item class="q-pa-md" clickable v-ripple v-for="sitter in sitters" :key="sitter.id" @click="sitterDetails(sitter)">
           <q-item-section avatar>
             <q-avatar>
@@ -18,9 +16,8 @@
           </q-item-section>
 
         </q-item>
-
       </q-list>
-    </div>
+
   </q-page>
 </template>
 
@@ -31,10 +28,13 @@ export default {
   name: 'p_sitters',
   data () {
     return {
-      sitters: []
+      sitters: [],
+      loading: false
     }
   },
   async created () {
+    this.loading = true
+    this.$q.loading.show()
     let querySnapshot = await db.collection('Users').where('type', '==', 'sitter').get()
     querySnapshot.forEach((documentSnapshot) => {
       let sitter = documentSnapshot.data()
@@ -42,6 +42,8 @@ export default {
       this.$store.commit('setCurrentLocation', 'All Active Sitters')
       this.sitters.push(sitter)
     })
+    this.loading = false
+    this.$q.loading.hide()
   },
   methods: {
     AgeCalculation (birthday) {

@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <q-card flat v-if="!isLoading">
+
       <q-card-section>
         <div class="text-h6 text-center">
           <parent-name :parentID="viewJob.parentID"></parent-name>
@@ -17,7 +18,11 @@
         </div>
       </q-card-section>
       <q-separator />
-
+      <img
+          class="image-size"
+          src="https://i.gifer.com/7E2b.gif"
+        />
+        <q-separator />
       <q-card-section>
         <google-map :parentID="viewJob.parentID"></google-map>
       </q-card-section>
@@ -63,4 +68,7 @@ export default {
 </script>
 
 <style lang='stylus' scoped>
+.image-size
+  max-height: 75px
+  max-width: 500px
 </style>
