@@ -3,13 +3,12 @@
 </template>
 
 <script>
-import { getUserData, loginUserAuthGoogle } from '../utils/auth'
-
+import { loginUserAuthGoogle, getUserData } from '../utils/auth'
 export default {
   name: 'GoogleLogin',
   methods: {
     loginWithGoogle () {
-      loginUserAuthGoogle(this.$q.platform).then((userInfo) => {
+      loginUserAuthGoogle().then((userInfo) => {
         getUserData(userInfo.user.uid).then((snapshot) => {
           if (snapshot.empty) {
             this.$q.localStorage.set('reg_email', userInfo.user.email)

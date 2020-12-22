@@ -44,8 +44,9 @@ export default {
       })
       this.isLoading = false
     } catch (error) {
-      console.log('error: ', error)
+      console.error('error: ', error)
     }
+    this.$store.commit('setCurrentLocation', 'All Parents')
   },
   filters: {
     displayDate (value) {

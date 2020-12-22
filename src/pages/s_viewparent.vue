@@ -70,6 +70,7 @@ export default {
       let parent = document.data()
       this.jobs.push(parent)
     })
+    this.$store.commit('setCurrentLocation', 'Parent Details')
   },
   filters: {
     displayDate (value) {

@@ -40,6 +40,7 @@ export default {
   methods: {
     launchPicker () {
       if (this.$q.platform.is.mobile) {
+        console.log(this.$q)
         this.capturePic()
       } else {
         this.$refs.file.click()

@@ -37,7 +37,7 @@
 
               <div class="text-center">Don't have an Account? <router-link to="/register-local-user">Create One</router-link></div>
 
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col q-pt-sm"><q-separator/></div>
                 <div class="col text-center">OR</div>
                 <div class="col q-pt-sm"><q-separator/></div>
@@ -49,7 +49,7 @@
 
               <q-card-actions>
                 <facebook-login />
-              </q-card-actions>
+              </q-card-actions> -->
 
             </q-card>
         </q-page>
@@ -59,8 +59,8 @@
 
 <script>
 import { loginUserAuth, getUserData } from '../utils/auth'
-import GoogleLogin from '../components/GoogleLogin'
-import FacebookLogin from '../components/FacebookLogin.vue'
+// import GoogleLogin from '../components/GoogleLogin'
+// import FacebookLogin from '../components/FacebookLogin.vue'
 
 export default {
   name: 'Login',
@@ -71,10 +71,6 @@ export default {
       loading: false,
       loginError: false
     }
-  },
-  components: {
-    'google-login': GoogleLogin,
-    'facebook-login': FacebookLogin
   },
   methods: {
     loginUser () {
@@ -94,7 +90,7 @@ export default {
         })
         this.loading = false
       }).catch((error) => {
-        console.log('error: ', error)
+        console.error('error: ', error)
         this.loading = false
         this.loginError = true
       })

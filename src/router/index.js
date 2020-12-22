@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { auth } from '../boot/firebase'
 
 import routes from './routes'
 
@@ -22,5 +23,20 @@ export default function (/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   })
 
+  Router.beforeEach(async (to, from, next) => {
+    const user = await new Promise((resolve, reject) => {
+      auth.onAuthStateChanged(user => {
+        resolve(user)
+      })
+    })
+
+    const requiresAuth = to.matched.some(recordedRoute => recordedRoute.meta.requiresAuth)
+
+    if (requiresAuth && !user) {
+      next({ path: '/' })
+    } else {
+      next()
+    }
+  })
   return Router
 }

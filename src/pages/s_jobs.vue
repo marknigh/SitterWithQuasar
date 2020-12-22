@@ -12,7 +12,7 @@
             v-model="filter"
             dense
             options-dense
-          :options="selectOptions"
+            :options="selectOptions"
           >
             <template v-slot:append>
               <q-icon v-if="filter !== ''" name="close" @click.stop="filter = ''" class="cursor-pointer" />
@@ -57,8 +57,8 @@ export default {
   data () {
     return {
       jobs: [],
-      selectOptions: ['Won'],
-      filter: '',
+      selectOptions: ['Active', 'My Wins', 'All'],
+      filter: 'Active',
       sitterKey: this.$store.getters.getKey,
       isLoading: true
     }
@@ -67,7 +67,7 @@ export default {
     'parent-name': GetParentname
   },
   async created () {
-    const querySnapshot = await db.collection('Jobs').where('active', '==', true).get()
+    const querySnapshot = await db.collection('Jobs').get()
     querySnapshot.forEach((doc) => {
       let jobs = doc.data()
       jobs.id = doc.id
@@ -91,8 +91,12 @@ export default {
   },
   computed: {
     filterJobs () {
-      if (this.filter === 'Won') {
-        return (this.jobs.filter((job) => { return (job.awarded === this.sitterKey) }))
+      if (this.filter === 'My Wins') {
+        this.$store.commit('setCurrentLocation', 'Won Jobs')
+        return (this.jobs.filter((job) => { return (job.awarded === this.sitterKey && job.active === true) }))
+      } else if (this.filter === 'Active') {
+        this.$store.commit('setCurrentLocation', 'All Jobs')
+        return (this.jobs.filter((job) => { return (job.active === true) }))
       } else {
         return this.jobs
       }

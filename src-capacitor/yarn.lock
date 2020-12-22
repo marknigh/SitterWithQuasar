@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@capacitor/android@^2.4.4":
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-2.4.4.tgz#6f96a7f37c0e9c5359d887140016f84a8cc1e2f2"
-  integrity sha512-0ueuW7R6PUCSI/bRdVlyM156JtvdJWhIInptC/yIdz/FjdvX8G8Rcb7lVoRk15eVUapqSQZ/S09F8JajaGnJjA==
+"@capacitor/android@^2.4.5":
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-2.4.5.tgz#7ceefd0857eb2f789225bfb88f7467bfa3409125"
+  integrity sha512-LwnOPc1/luS3RqCiKx9l5qQtxQfFu4YW2r4U8Ko1Lr91i9Ibix1ChWqnvsBlcrdeNdhmMrW2v53mn22oT4F6oA==
 
 "@capacitor/cli@^1.0.0":
   version "1.5.3"

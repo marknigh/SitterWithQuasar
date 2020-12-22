@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import { db } from '../boot/firebase'
+import { db, auth } from '../boot/firebase'
 
 const googleProvider = new firebase.auth.GoogleAuthProvider()
 const facebookProvider = new firebase.auth.FacebookAuthProvider()
@@ -16,13 +16,8 @@ function loginUserAuth (email, password) {
   return firebase.auth().signInWithEmailAndPassword(email, password)
 }
 
-function loginUserAuthGoogle (platform) {
-  if (platform.is.desktop) {
-    console.log(platform)
-    return firebase.auth().signInWithPopup(googleProvider)
-  } else {
-    return firebase.auth().signInWithRedirect(googleProvider)
-  }
+function loginUserAuthGoogle () {
+  return auth.signInWithPopup(googleProvider)
 }
 
 function loginUserAuthFacebook () {
@@ -34,7 +29,6 @@ function getUserData (id) {
 }
 
 function getUserDataRegister (docRef) {
-  console.log('getUserDataRegister: ', docRef)
   return docRef.get()
 }
 

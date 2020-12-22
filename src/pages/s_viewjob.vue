@@ -23,9 +23,9 @@
       </div>
 
       <div class="row">
-        <template v-for="who in viewJob.applied">
-          <who-applied :who="who" :job="viewJob" :key="who.id"></who-applied>
-        </template>
+        <div v-for="(who, index) in viewJob.applied" :key="index">
+          <who-applied :who="who" :job="viewJob" :key="componentKey"></who-applied>
+        </div>
       </div>
 
       <div class="row q-pa-md" v-if="!viewJob.awarded">
@@ -47,11 +47,6 @@ import firebase from 'firebase'
 
 export default {
   name: 'ViewJob',
-  props: {
-    id: {
-      type: String
-    }
-  },
   components: {
     'parent-name': ParentName,
     'who-applied': WhoApplied
@@ -61,32 +56,44 @@ export default {
       viewJob: {},
       sitterKey: this.$store.getters.getKey,
       sDateDisplay: null,
-      isLoading: true
+      isLoading: true,
+      componentKey: 0
     }
+  },
+  beforeRouteUpdate (to, from, next) {
+    if (to.path !== from.path) {
+      this.getJob(to.params.id)
+    }
+    next()
   },
   async created () {
-    try {
-      let docReference = await db.collection('Jobs').doc(this.id).get()
-      this.viewJob = docReference.data()
-      this.viewJob.id = docReference.id
-      this.sDateDisplay = date.formatDate(this.viewJob.startDate.toDate(), 'MM-DD-YYYY')
-      this.isLoading = false
-    } catch (error) {
-      console.log('error: ', error)
-    }
+    this.getJob(this.$route.params.id)
   },
   methods: {
+    async getJob (id) {
+      try {
+        let docReference = await db.collection('Jobs').doc(id).get()
+        this.viewJob = docReference.data()
+        this.viewJob.id = docReference.id
+        this.sDateDisplay = date.formatDate(this.viewJob.startDate.toDate(), 'MM-DD-YYYY')
+        this.isLoading = false
+      } catch (error) {
+        console.error('error: ', error)
+      }
+      this.$store.commit('setCurrentLocation', 'Job Details')
+    },
     async apply () {
       try {
-        await db.collection('Jobs').doc(this.id).update({ applied: firebase.firestore.FieldValue.arrayUnion(this.sitterKey) })
+        await db.collection('Jobs').doc(this.viewJob.id).update({ applied: firebase.firestore.FieldValue.arrayUnion(this.sitterKey) })
         this.viewJob.applied.push(this.sitterKey)
       } catch (error) {
-        console.log('error: ', error)
+        console.error('error: ', error)
       }
     },
     async unApply () {
-      await db.collection('Jobs').doc(this.id).update({ applied: firebase.firestore.FieldValue.arrayRemove(this.sitterKey) })
-      this.viewJob.applied.pop(this.sitterKey)
+      await db.collection('Jobs').doc(this.viewJob.id).update({ applied: firebase.firestore.FieldValue.arrayRemove(this.sitterKey) })
+      this.viewJob.applied.splice(this.viewJob.applied.indexOf(this.sitterKey), 1)
+      this.componentKey += 1
     },
     convertTime (time) {
       return convertTime(time)

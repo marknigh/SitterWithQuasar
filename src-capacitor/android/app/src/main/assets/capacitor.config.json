@@ -6,16 +6,25 @@
   "webDir": "www",
   "plugins": {
     "SplashScreen": {
-      "launchAutoHide": false,
-      "showSpinner": true,
-      "androidSpinnerStyle": "small",
-      "iosSpinnerStyle": "small",
-      "spinnerColor": "#ffffff",
-      "backgroundColor": "#21252dff",
-      "splashFullScreen": true,
+      "launchShowDuration": 3000,
+      "launchAutoHide": true,
+      "backgroundColor": "#ffffffff",
+      "androidSplashResourceName": "splash",
       "androidScaleType": "CENTER_CROP",
-      "splashImmersive": false
+      "androidSpinnerStyle": "large",
+      "iosSpinnerStyle": "small",
+      "spinnerColor": "#999999",
+      "showSpinner": true,
+      "splashFullScreen": true,
+      "splashImmersive": true
     }
+  },
+  "PushNotifications": {
+    "presentationOptions": [
+      "badge",
+      "sound",
+      "alert"
+    ]
   },
   "server": {
     "url": "http://192.168.1.97:8080"

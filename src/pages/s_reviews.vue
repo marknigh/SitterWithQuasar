@@ -63,6 +63,7 @@ export default {
       console.log('error: ', error)
       this.isLoading = false
     }
+    this.$store.commit('setCurrentLocation', 'Your Reviews')
   }
 }
 </script>

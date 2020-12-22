@@ -99,6 +99,9 @@ module.exports = function (ctx) {
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history',
+      ugligyOptions: {
+        compress: { drop_console: true }
+      },
       // vueCompiler: true,
       // gzip: true,
       // analyze: true,

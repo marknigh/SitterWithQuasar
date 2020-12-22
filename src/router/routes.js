@@ -23,7 +23,7 @@ const routes = [
       { path: '/sitter/parents', component: () => import('pages/s_parents.vue') },
       { path: '/sitter/parents/viewparent', name: 'viewParent', props: true, component: () => import('pages/s_viewParent.vue') },
       { path: '/sitter/jobs', component: () => import('pages/s_jobs.vue') },
-      { path: '/sitter/job/viewjob', name: 'viewJob', props: true, component: () => import('pages/s_viewjob.vue') },
+      { path: '/sitter/job/viewjob/:id', name: 'viewJob', component: () => import('pages/s_viewjob.vue') },
       { path: '/sitter/job/viewawardedjob', name: 'viewAwardedJob', props: true, component: () => import('pages/s_ViewAwardedJob.vue') },
       { path: '/sitter/reviews', component: () => import('pages/s_reviews.vue') }
     ]

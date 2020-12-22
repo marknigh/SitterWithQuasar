@@ -57,6 +57,7 @@ export default {
     let documentSnaphot = await db.collection('Jobs').doc(this.id).get()
     this.viewJob = documentSnaphot.data()
     this.sDateDisplay = date.formatDate(this.viewJob.startDate.toDate(), 'MM-DD-YYYY')
+    this.$store.commit('setCurrentLocation', 'Won!!')
     this.isLoading = false
   },
   methods: {

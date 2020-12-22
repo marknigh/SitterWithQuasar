@@ -13,7 +13,7 @@
         </q-btn>
 
         <q-toolbar-title>
-          Ste. Gen Sitter
+          {{ currentLocation }}
         </q-toolbar-title>
 
       </q-toolbar>
@@ -117,7 +117,11 @@ export default {
   computed: {
     currentUser () {
       return this.$store.getters.getCurrentUser
+    },
+    currentLocation () {
+      return this.$store.getters.getCurrentLocation
     }
+
   },
   methods: {
     openURL,

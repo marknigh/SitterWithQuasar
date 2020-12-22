@@ -31,18 +31,22 @@ export default {
   data () {
     return {
       sitter: {},
-      currentSitterKey: this.$store.getters.getKey,
       isLoading: true
     }
   },
-  async created () {
-    try {
-      let docRef = await db.collection('Users').doc(this.who).get()
-      this.sitter = docRef.data()
-      this.sitter.id = docRef.id
-      this.isLoading = false
-    } catch (error) {
-      console.log('error: ', error)
+  created () {
+    this.getSitterInfo()
+  },
+  methods: {
+    async getSitterInfo () {
+      try {
+        let docRef = await db.collection('Users').doc(this.who).get()
+        this.sitter = docRef.data()
+        this.sitter.id = docRef.id
+        this.isLoading = false
+      } catch (error) {
+        console.log('error: ', error)
+      }
     }
   }
 }
