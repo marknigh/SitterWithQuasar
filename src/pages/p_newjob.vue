@@ -18,8 +18,8 @@
         <q-input class="col" hint="click icon" v-model="sDateDisplay" stack-label label="Start Date" error-message="A Start Date is Required" :error="startDateErrors">
           <template v-slot:append>
             <q-icon name="eva-calendar-outline" class="cursor-pointer">
-              <q-popup-proxy>
-                <q-date v-model="sDate" />
+              <q-popup-proxy ref="qDateProxy">
+                <q-date flat v-model="sDate" @input="() => $refs.qDateProxy.hide()" transition-show="scale" transition-hide="scale"/>
               </q-popup-proxy>
             </q-icon>
           </template>
@@ -30,9 +30,10 @@
         <q-input class="col" hint="click icon" v-model="sTime" label="Start Time" error-message="A Start Time is Required" :error="startTimeErrors">
           <template v-slot:append>
             <q-icon name="eva-clock-outline" class="cursor-pointer">
-              <q-popup-proxy>
+              <q-popup-proxy ref="qTimeProxy">
                 <q-time
                   v-model="newJob.startTime"
+                  @input="() => $refs.qTimeProxy.hide()"
                 />
               </q-popup-proxy>
             </q-icon>

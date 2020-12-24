@@ -4,4 +4,6 @@
     <string name="title_activity_main">Ste Gen Sitter</string>
     <string name="package_name">org.stegen.sitter</string>
     <string name="custom_url_scheme">org.stegen.sitter</string>
+    <string name="facebook_app_id">510681296130926</string>
+    <string name="fb_login_protocol_scheme">fb510681296130926://authorize</string>
 </resources>

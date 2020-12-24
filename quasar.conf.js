@@ -176,7 +176,9 @@ module.exports = function (ctx) {
     cordova: {
       // id: 'org.cordova.quasar.app'
     },
-
+    capacitor: {
+      version: 1.1
+    },
     electron: {
       // bundler: 'builder', // or 'packager'
       extendWebpack (cfg) {

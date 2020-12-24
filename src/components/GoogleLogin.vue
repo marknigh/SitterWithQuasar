@@ -4,6 +4,7 @@
 
 <script>
 import { loginUserAuthGoogle, getUserData } from '../utils/auth'
+
 export default {
   name: 'GoogleLogin',
   methods: {

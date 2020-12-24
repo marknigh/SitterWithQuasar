@@ -37,19 +37,19 @@
 
               <div class="text-center">Don't have an Account? <router-link to="/register-local-user">Create One</router-link></div>
 
-              <!-- <div class="row">
+              <div class="row">
                 <div class="col q-pt-sm"><q-separator/></div>
                 <div class="col text-center">OR</div>
                 <div class="col q-pt-sm"><q-separator/></div>
               </div>
 
               <q-card-actions>
-                <google-login />
+                <google-login-mobile />
               </q-card-actions>
 
               <q-card-actions>
-                <facebook-login />
-              </q-card-actions> -->
+                <facebook-login-mobile />
+              </q-card-actions>
 
             </q-card>
         </q-page>
@@ -59,8 +59,8 @@
 
 <script>
 import { loginUserAuth, getUserData } from '../utils/auth'
-// import GoogleLogin from '../components/GoogleLogin'
-// import FacebookLogin from '../components/FacebookLogin.vue'
+import GoogleLoginMobile from '../components/GoogleLoginMobile'
+import FacebookLoginMobile from '../components/FacebookLoginMobile.vue'
 
 export default {
   name: 'Login',
@@ -71,6 +71,10 @@ export default {
       loading: false,
       loginError: false
     }
+  },
+  components: {
+    'google-login-mobile': GoogleLoginMobile,
+    'facebook-login-mobile': FacebookLoginMobile
   },
   methods: {
     loginUser () {

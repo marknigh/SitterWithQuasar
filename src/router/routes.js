@@ -32,7 +32,8 @@ const routes = [
   { path: '/register-user-type', component: () => import('pages/RegisterUserType.vue') },
   { path: '/register-local-user', component: () => import('pages/RegisterLocalAuthUser') },
   { path: '/register-parent', component: () => import('pages/RegisterParent.vue') },
-  { path: '/register-sitter', component: () => import('pages/RegisterSitter.vue') }
+  { path: '/register-sitter', component: () => import('pages/RegisterSitter.vue') },
+  { path: '/privacy', component: () => import('pages/privacy.vue') }
 ]
 
 // Always leave this as last one

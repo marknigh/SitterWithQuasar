@@ -17,6 +17,19 @@
       "showSpinner": true,
       "splashFullScreen": true,
       "splashImmersive": true
+    },
+    "CapacitorFirebaseAuth": {
+      "providers": [
+        "google.com",
+        "facebook.com"
+      ],
+      "languageCode": "en",
+      "nativeAuth": true,
+      "permission": {
+        "google": [
+          "profile"
+        ]
+      }
     }
   },
   "PushNotifications": {
