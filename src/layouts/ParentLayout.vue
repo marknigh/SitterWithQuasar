@@ -61,16 +61,7 @@
             <q-item-label caption>Your Active Jobs</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="!currentUser" clickable tag="a" target="_blank" @click.native="signIn()">
-          <q-item-section avatar>
-            <q-icon name="eva-log-in-outline" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Sign In</q-item-label>
-            <q-item-label caption>Sign In to Your Account</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item v-else clickable tag="a" target="_blank" @click.native="signOut()">
+        <q-item clickable tag="a" target="_blank" @click.native="signOut()">
           <q-item-section avatar>
             <q-icon name="eva-log-out-outline" />
           </q-item-section>
@@ -89,7 +80,6 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
 import { signOutAuth } from '../utils/auth'
 
 export default {
@@ -108,7 +98,6 @@ export default {
     }
   },
   methods: {
-    openURL,
     listSitters () {
       this.$router.push('/parent/sitters')
     },

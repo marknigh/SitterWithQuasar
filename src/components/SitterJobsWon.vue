@@ -23,8 +23,8 @@ export default {
   },
   data () {
     return {
-      jobsWon: Number,
-      jobsApplied: Number
+      jobsWon: 0,
+      jobsApplied: 0
     }
   },
   async created () {

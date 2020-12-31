@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 import { db, auth } from '../boot/firebase'
+import { cfaSignOut } from 'capacitor-firebase-auth'
 
 const googleProvider = new firebase.auth.GoogleAuthProvider()
 const facebookProvider = new firebase.auth.FacebookAuthProvider()
@@ -33,7 +34,7 @@ function getUserDataRegister (docRef) {
 }
 
 function signOutAuth () {
-  return firebase.auth().signOut()
+  cfaSignOut().subscribe()
 }
 
 function alertMessage (error) {

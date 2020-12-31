@@ -28,7 +28,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <img :src="currentUser.photoURL ? currentUser.photoURL : '../assets/quasar-logo-full.svg'">
+              <img :src="currentUser.photoURL ? currentUser.photoURL : '../assets/inside-a-circle-reverse.png'">
             </q-avatar>
           </q-item-section>
           <q-item-section>
@@ -104,7 +104,6 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
 import { signOutAuth } from '../utils/auth'
 
 export default {
@@ -124,7 +123,6 @@ export default {
 
   },
   methods: {
-    openURL,
     listParents () {
       this.$router.push('/sitter/parents')
     },
