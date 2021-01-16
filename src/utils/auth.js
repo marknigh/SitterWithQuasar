@@ -26,7 +26,7 @@ function loginUserAuthFacebook () {
 }
 
 function getUserData (id) {
-  return db.collection('Users').where('authKey', '==', id).get()
+  return db.collection('Users').doc(id).get()
 }
 
 function getUserDataRegister (docRef) {

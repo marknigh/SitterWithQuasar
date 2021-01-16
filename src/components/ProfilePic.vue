@@ -5,8 +5,9 @@
         <input type="file"
           ref="file"
           :name="uploadFieldName"
-          @change="uploadPic($event.target.name, $event.target.files)"
-          style="display:none">
+          @change="uploadPic($event)"
+          style="display:none"
+          accept=".png,.jpg">
           <q-avatar size="64px">
             <img :src="sitter.photoURL" />
           </q-avatar>
@@ -18,6 +19,7 @@
 <script>
 import { Plugins, CameraResultType, CameraSource } from '../../src-capacitor/node_modules/@capacitor/core'
 import { storage } from '../boot/firebase'
+import { sanitizePic } from '../utils/misc'
 
 const { Camera } = Plugins
 
@@ -68,19 +70,26 @@ export default {
         })
       })
     },
-    async uploadPic (name, files) {
-      console.log('event: ', name, files)
-      let file = event.target.files[0]
-      console.log('file: ', file)
-      var storageRef = storage.ref()
-      var imageRef = storageRef.child('userImages/' + this.$store.getters.getKey)
-      try {
-        let snapshot = await imageRef.put(file)
-        let downloadURL = await snapshot.ref.getDownloadURL()
-        this.sitter.photoURL = downloadURL
-      } catch (error) {
-        console.log('error: ', error)
-      }
+    uploadPic (event) {
+      let hex = sanitizePic(event.target.files[0]).then(() => {
+        if (hex) {
+          console.log('event:', event.target.files[0])
+          var storageRef = storage.ref()
+          var imageRef = storageRef.child('userImages/' + this.$store.getters.getKey)
+          imageRef.put(event.target.files[0]).then((snapshot) => {
+            snapshot.ref.getDownloadURL().then((downloadURL) => {
+              this.sitter.photoURL = downloadURL
+            })
+          })
+        }
+      }).catch(() => {
+        this.$q.notify({
+          message: 'Wrong File Type',
+          icon: 'eva-alert-circle-outline',
+          position: 'top-right',
+          color: 'negative'
+        })
+      })
     }
   }
 }

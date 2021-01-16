@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Ste Gen Sitter</string>
-    <string name="title_activity_main">Ste Gen Sitter</string>
+    <string name="app_name">Warson Woods Jobs</string>
+    <string name="title_activity_main">Warson Woods Jobs</string>
     <string name="package_name">org.stegen.sitter</string>
     <string name="custom_url_scheme">org.stegen.sitter</string>
     <string name="facebook_app_id">510681296130926</string>

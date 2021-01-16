@@ -78,11 +78,10 @@ export default {
         console.log('errors')
       } else {
         this.saving = true
-        this.parent.authKey = this.$q.localStorage.getItem('reg_uid')
         this.parent.type = 'parent'
         try {
-          let docRef = await db.collection('Users').add(this.parent)
-          this.$store.commit('setUserKey', docRef.id)
+          await db.collection('Users').doc(this.$q.localStorage.getItem('reg_uid')).set(this.parent)
+          this.$store.commit('setUserKey', this.$q.localStorage.getItem('reg_uid'))
           this.$store.commit('setCurrentUser', this.parent)
           this.$store.commit('setCurrentLocation', 'Home')
           this.saving = false

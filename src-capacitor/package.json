@@ -1,7 +1,7 @@
 {
-  "name": "stegensitter",
-  "version": 1.1,
-  "description": "Best Sitters in the Woods",
+  "name": "warsonwoodsjobs",
+  "version": "1.3.0",
+  "description": "Best Jobs in the Woods",
   "author": "Mark Nigh",
   "private": true,
   "dependencies": {

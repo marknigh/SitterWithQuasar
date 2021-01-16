@@ -69,6 +69,7 @@ export default {
   },
   methods: {
     newJob () {
+      this.$store.commit('setCurrentLocation', 'New Job')
       this.$router.push('/parent/newjob')
     },
     editJob (job) {

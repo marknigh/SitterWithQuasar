@@ -5,7 +5,7 @@
             <q-card flat class="my-card">
 
               <q-card-section>
-                <h4 class="text-center text-weight-thin">Ste. Gen Sitter</h4>
+                <h4 class="text-center text-weight-thin">Warson Woods Jobs</h4>
               </q-card-section>
 
               <q-card-section>

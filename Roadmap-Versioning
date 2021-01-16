@@ -1,0 +1,25 @@
+version 1.0.0
+-- Initial Web Build
+--- Build for Android. Published on Google Play Store
+
+version 1.1.0
+-- Added Social Login for Android and Web
+
+version 1.2.0
+-- Name Change to 'Warson Woods Jobs'
+-- Upgraded Quasar to version 1.15.0
+-- Build Android App Push to store as #2 release version 1.2.0
+
+version 1.3.0
+-- Change the ID for <Users> to match the User ID within the Authentication Section of Firebase 
+-- Add check on profile picture upload. Only allows .jpg and .png. Sanatized input on webapp.
+-- Fixed issues with Google Maps.
+-- Update Android Icons
+-- Merged Branch 'Quasar-Upgrade' to master. 
+
+version 1.4.0
+-- Build for iOS. Published on Apple Store
+
+version 1.5.0
+-- Add other in Job Type
+-- Add Dollar Amount to New Job in Parent View

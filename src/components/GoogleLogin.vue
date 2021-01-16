@@ -10,6 +10,7 @@ export default {
   methods: {
     loginWithGoogle () {
       loginUserAuthGoogle().then((userInfo) => {
+        console.log('userInfor:', userInfo)
         getUserData(userInfo.user.uid).then((snapshot) => {
           if (snapshot.empty) {
             this.$q.localStorage.set('reg_email', userInfo.user.email)

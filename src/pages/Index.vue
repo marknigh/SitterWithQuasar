@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="text-h3 text-weight-thin">Ste. Gen Sitter!</div>
+    <div class="text-h5 text-weight-thin">Warson Woods Jobs</div>
   </q-page>
 </template>
 

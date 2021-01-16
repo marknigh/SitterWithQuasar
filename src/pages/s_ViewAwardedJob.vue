@@ -17,11 +17,6 @@
           <q-icon name="eva-clock-outline"/> {{ convertTime(viewJob.startTime) }}
         </div>
       </q-card-section>
-      <q-separator />
-      <img
-          class="image-size"
-          src="https://i.gifer.com/7E2b.gif"
-        />
         <q-separator />
       <q-card-section>
         <google-map :parentID="viewJob.parentID"></google-map>

@@ -177,7 +177,7 @@ module.exports = function (ctx) {
       // id: 'org.cordova.quasar.app'
     },
     capacitor: {
-      version: 1.1
+      version: '1.3.0'
     },
     electron: {
       // bundler: 'builder', // or 'packager'

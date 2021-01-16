@@ -1,50 +1,33 @@
 {
   "project_info": {
-    "project_number": "392225760455",
-    "firebase_url": "https://project-5760468166739261631.firebaseio.com",
-    "project_id": "project-5760468166739261631",
-    "storage_bucket": "project-5760468166739261631.appspot.com"
+    "project_number": "301535237396",
+    "project_id": "warson-woods-jobs",
+    "storage_bucket": "warson-woods-jobs.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:392225760455:android:1bd46bbacfb9a9d9",
+        "mobilesdk_app_id": "1:301535237396:android:9602e1001807612be51e01",
         "android_client_info": {
           "package_name": "org.stegen.sitter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "392225760455-rs55jpggr98h945thd1vp4s4nvn9vmqn.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.stegen.sitter",
-            "certificate_hash": "3024536af7a41e64564d8eb0754b7c4edb3e08dd"
-          }
-        },
-        {
-          "client_id": "392225760455-tl86o0keo73gvupk8151hi7aomnk83si.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "org.stegen.sitter",
-            "certificate_hash": "6a1c44a6c0ad7e3322133fc680affd97aa05438c"
-          }
-        },
-        {
-          "client_id": "392225760455-ae3iasdrk134v1vb262u1790ljbtrjdn.apps.googleusercontent.com",
+          "client_id": "301535237396-gcudssobj39733pmjkun44t2o6m3ctnm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDL-f6exRc7j9IwSJ4FTzbT1LY87yu6ZFk"
+          "current_key": "AIzaSyArDlSU1ravN51v9B4AGxy63w__69mz3ho"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "392225760455-ae3iasdrk134v1vb262u1790ljbtrjdn.apps.googleusercontent.com",
+              "client_id": "301535237396-gcudssobj39733pmjkun44t2o6m3ctnm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

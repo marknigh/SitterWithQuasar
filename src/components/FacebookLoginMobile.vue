@@ -17,29 +17,24 @@ export default {
     loginWithFacebook () {
       this.loading = true
       cfaSignIn('facebook.com').subscribe((userInfo) => {
-        console.log('userInfo: ', userInfo)
-        getUserData(userInfo.uid).then((snapshot) => {
-          if (snapshot.empty) {
-            this.$q.localStorage.set('reg_email', userInfo.user.email)
-            this.$q.localStorage.set('reg_uid', userInfo.user.uid)
+        getUserData(userInfo.uid).then((doc) => {
+          if (!doc.exists) {
+            this.$q.localStorage.set('reg_email', userInfo.email)
+            this.$q.localStorage.set('reg_uid', userInfo.uid)
             this.loading = false
-            this.$router.push('/register')
+            this.$router.push('/register-user-type')
           } else {
-            snapshot.forEach(doc => {
-              console.log('doc: ', doc.data())
-              this.$store.commit('setUserKey', doc.id)
-              this.$store.commit('setCurrentUser', doc.data())
-              this.loading = false
-              if (doc.data().type === 'sitter') {
-                this.$router.push('/sitter')
-              } else {
-                this.$router.push('/parent')
-              }
-            })
+            this.$store.commit('setUserKey', doc.id)
+            this.$store.commit('setCurrentUser', doc.data())
+            this.loading = false
+            if (doc.data().type === 'sitter') {
+              this.$router.push('/sitter')
+            } else {
+              this.$router.push('/parent')
+            }
           }
         })
-      }).catch((error) => {
-        console.log('error: ', error)
+      }).catch(() => {
         this.loginError = true
       })
     }

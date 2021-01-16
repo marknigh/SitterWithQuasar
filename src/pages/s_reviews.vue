@@ -15,7 +15,11 @@
   </q-page>
 
   <q-page v-else-if="reviews.length == 0 && isLoading == false" class="flex flex-center">
-    <div class="text-h6 text-weight-thin">No Reviews Have Been Written About You</div>
+    <div class="column flex-center">
+      <div class="text-h6 text-weight-thin">No Reviews</div>
+      <div class="text-h6 text-weight-thin">Have Been</div>
+      <div class="text-h6 text-weight-thin">Written About You</div>
+    </div>
   </q-page>
 
   <q-page v-else class="flex flex-center">

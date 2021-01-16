@@ -8,6 +8,9 @@
 export default {
   name: 'test',
   methods: {
+    test () {
+
+    }
   }
 }
 </script>

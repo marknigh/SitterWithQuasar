@@ -17,25 +17,23 @@ export default {
     loginWithGoogle () {
       this.loading = true
       cfaSignIn('google.com').subscribe((user) => {
-        getUserData(user.uid).then((snapshot) => {
-          if (snapshot.empty) {
-            this.$q.localStorage.set('reg_email', user.user.email)
-            this.$q.localStorage.set('reg_uid', user.user.uid)
+        console.log('user:', user)
+        getUserData(user.uid).then((doc) => {
+          if (!doc.exists) {
+            this.$q.localStorage.set('reg_email', user.email)
+            this.$q.localStorage.set('reg_uid', user.uid)
             this.loading = false
-            this.$router.push('/register')
+            this.$router.push('/register-user-type')
           } else {
-            snapshot.forEach(doc => {
-              console.log('doc: ', doc.data())
-              this.$store.commit('setUserKey', doc.id)
-              this.$store.commit('setCurrentUser', doc.data())
-              this.$store.commit('setCurrentLocation', 'Home')
-              this.loading = false
-              if (doc.data().type === 'sitter') {
-                this.$router.push('/sitter')
-              } else {
-                this.$router.push('/parent')
-              }
-            })
+            this.$store.commit('setUserKey', doc.id)
+            this.$store.commit('setCurrentUser', doc.data())
+            this.$store.commit('setCurrentLocation', 'Home')
+            this.loading = false
+            if (doc.data().type === 'sitter') {
+              this.$router.push('/sitter')
+            } else {
+              this.$router.push('/parent')
+            }
           }
         })
       })

@@ -19,7 +19,7 @@ exports.newJobPosted = functions.firestore.document('Jobs/{jobId}')
     var message = {
       tokens: tokenArray,
       notification: {
-        title: 'Ste. Gen Sitter Job Alert',
+        title: 'Warson Woods Job Alert',
         body: 'A Parent has recently posted a new job'
       },
       data: {
