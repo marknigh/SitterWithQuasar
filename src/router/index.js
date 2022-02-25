@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { auth } from '../boot/firebase'
-
+import { onAuthStateChanged, getAuth } from 'firebase/auth'
 import routes from './routes'
 
 Vue.use(VueRouter)
@@ -25,7 +24,7 @@ export default function (/* { store, ssrContext } */) {
 
   Router.beforeEach(async (to, from, next) => {
     const user = await new Promise((resolve, reject) => {
-      auth.onAuthStateChanged(user => {
+      onAuthStateChanged(getAuth(), user => {
         resolve(user)
       })
     })

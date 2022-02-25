@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
@@ -40,9 +41,10 @@ export default {
   methods: {
     async getSitterInfo () {
       try {
-        let docRef = await db.collection('Users').doc(this.who).get()
-        this.sitter = docRef.data()
-        this.sitter.id = docRef.id
+        const docRef = doc(db, 'Users', this.who)
+        const docSnap = await getDoc(docRef)
+        this.sitter = docSnap.data()
+        this.sitter.id = docSnap.id
         this.isLoading = false
       } catch (error) {
         console.log('error: ', error)

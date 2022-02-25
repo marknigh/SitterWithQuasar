@@ -35,6 +35,7 @@
 import { db } from '../boot/firebase'
 import ParentName from '../components/ParentName'
 import { date } from 'quasar'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 
 export default {
   name: 'SitterReviews',
@@ -56,7 +57,9 @@ export default {
   },
   async created () {
     try {
-      let querySnapshot = await db.collection('Reviews').where('sitter', '==', this.sitterKey).get()
+      const collectionRef = collection(db, 'Reviews')
+      const q = query(collectionRef, where('sitter', '==', this.sitterKey))
+      const querySnapshot = await getDocs(q)
       querySnapshot.forEach((document) => {
         let review = document.data()
         review.id = document.id

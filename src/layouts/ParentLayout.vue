@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { signOutAuth } from '../utils/auth'
+import { getAuth } from 'firebase/auth'
 
 export default {
   name: 'ParentLayout',
@@ -111,7 +111,7 @@ export default {
       this.$router.push('/')
     },
     signOut () {
-      signOutAuth()
+      getAuth().signOut()
       this.$store.commit('clearUser')
       this.$router.push('/')
     }

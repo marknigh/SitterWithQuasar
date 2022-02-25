@@ -1,5 +1,4 @@
 import { db } from '../boot/firebase'
-import firebase from 'firebase'
 
 function deleteJob (id) {
   return db.collection('Jobs').doc(id).delete()
@@ -19,7 +18,7 @@ function awardJob (id, job, name) {
 
 function removeAward (job) {
   return db.collection('Jobs').doc(job.id).update({
-    awarded: firebase.firestore.FieldValue.delete()
+    awarded: db.FieldValue.delete()
   })
 }
 

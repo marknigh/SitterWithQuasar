@@ -49,6 +49,7 @@
 
 <script>
 import { db } from '../boot/firebase'
+import { collection, getDocs } from 'firebase/firestore'
 import { date } from 'quasar'
 import GetParentname from '../components/ParentName'
 
@@ -67,7 +68,7 @@ export default {
     'parent-name': GetParentname
   },
   async created () {
-    const querySnapshot = await db.collection('Jobs').get()
+    const querySnapshot = await getDocs(collection(db, 'Jobs'))
     querySnapshot.forEach((doc) => {
       let jobs = doc.data()
       jobs.id = doc.id

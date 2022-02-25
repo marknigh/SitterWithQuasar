@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
@@ -29,9 +30,10 @@ export default {
     }
   },
   async created () {
-    let documentSnapshot = await db.collection('Users').doc(this.who).get()
-    this.sitter = documentSnapshot.data()
-    this.sitter.id = documentSnapshot.id
+    const docRef = doc(db, 'Users', this.who)
+    let docSnap = await getDoc(docRef)
+    this.sitter = docSnap.data()
+    this.sitter.id = docSnap.id
   },
   methods: {
     awardJob (id) {

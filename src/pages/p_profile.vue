@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { date } from 'quasar'
 import { db } from '../boot/firebase'
 
@@ -47,12 +48,15 @@ export default {
   },
   async created () {
     try {
-      let docReference = await db.collection('Users').doc(this.$store.getters.getKey).get()
-      this.profile = docReference.data()
-      this.profile.id = docReference.id
-      this.dateJoined = 'Member Since: ' + date.formatDate(new Date(this.profile.dateJoined.seconds * 1000), 'MMMM DD, YYYY')
-      this.$store.commit('setCurrentLocation', 'Your Profile')
-      this.loading = false
+      const docRef = doc(db, 'Users', this.$store.getters.getKey)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        this.profile = docSnap.data()
+        this.profile.id = docSnap.id
+        this.dateJoined = 'Member Since: ' + date.formatDate(new Date(this.profile.dateJoined.seconds * 1000), 'MMMM DD, YYYY')
+        this.$store.commit('setCurrentLocation', 'Your Profile')
+        this.loading = false
+      }
     } catch (error) {
       console.log('error: ', error)
       this.loading = false
@@ -62,7 +66,8 @@ export default {
     async savedProfile () {
       this.saving = true
       try {
-        await db.collection('Users').doc(this.profile.id).set(this.profile)
+        const parentRef = doc(db, 'Users', this.profile.id)
+        await updateDoc(parentRef, this.profile)
         this.$store.commit('setCurrentUser', this.profile)
         this.saving = false
         this.$q.notify({

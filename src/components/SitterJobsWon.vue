@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
@@ -28,10 +29,13 @@ export default {
     }
   },
   async created () {
-    let querySnapshot = await db.collection('Jobs').where('awarded', '==', this.sitter.id).get()
-    let querySnapshot1 = await db.collection('Jobs').where('applied', 'array-contains', this.sitter.id).get()
-    this.jobsWon = querySnapshot.size
-    this.jobsApplied = querySnapshot1.size
+    const jobRef = collection(db, 'Jobs')
+    const awardedQuery = query(jobRef, where('awarded', '==', this.sitter.id))
+    const appliedQuery = query(jobRef, where('applied', 'array-contains', this.sitter.id))
+    let awardedSnapshot = await getDocs(awardedQuery)
+    let appliedSnapshot = await getDocs(appliedQuery)
+    this.jobsWon = awardedSnapshot.size
+    this.jobsApplied = appliedSnapshot.size
   }
 }
 </script>

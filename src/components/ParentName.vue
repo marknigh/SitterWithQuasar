@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
@@ -14,10 +15,10 @@ export default {
     }
   },
   async created () {
-    const userRef = await db.collection('Users').doc(this.parentID)
-    const docRef = await userRef.get()
-    if (docRef.exists) {
-      this.name = docRef.data().name
+    const parentRef = doc(db, 'Users', this.parentID)
+    const parentDoc = await getDoc(parentRef)
+    if (parentDoc.exists) {
+      this.name = parentDoc.data().name
     } else {
       this.name = 'Unknown'
     }

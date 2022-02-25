@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { addDoc, collection } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
@@ -67,7 +68,8 @@ export default {
     },
     async saveView () {
       try {
-        await db.collection('Reviews').add({
+        const colRef = collection(db, 'Reviews')
+        await addDoc(colRef, {
           date: new Date(),
           parentID: this.$store.getters.getKey,
           sitter: this.sitter.id,
@@ -75,8 +77,9 @@ export default {
           rating: this.rating,
           title: this.title
         })
+        this.$emit('closedDialog')
       } catch (error) {
-        console.log('🚀 ~ file: WriteReview.vue ~ line 77 ~ saveView ~ error', error)
+        console.log('error: ', error)
       }
     }
   }

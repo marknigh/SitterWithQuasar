@@ -43,7 +43,7 @@ import WhoApplied from '../components/WhoApplied'
 import { db } from '../boot/firebase'
 import { convertTime } from '../utils/misc'
 import { date } from 'quasar'
-import firebase from 'firebase'
+import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
 
 export default {
   name: 'ViewJob',
@@ -72,9 +72,10 @@ export default {
   methods: {
     async getJob (id) {
       try {
-        let docReference = await db.collection('Jobs').doc(id).get()
-        this.viewJob = docReference.data()
-        this.viewJob.id = docReference.id
+        const docRef = doc(db, 'Jobs', id)
+        const docSnap = await getDoc(docRef)
+        this.viewJob = docSnap.data()
+        this.viewJob.id = docSnap.id
         this.sDateDisplay = date.formatDate(this.viewJob.startDate.toDate(), 'MM-DD-YYYY')
         this.isLoading = false
       } catch (error) {
@@ -84,14 +85,16 @@ export default {
     },
     async apply () {
       try {
-        await db.collection('Jobs').doc(this.viewJob.id).update({ applied: firebase.firestore.FieldValue.arrayUnion(this.sitterKey) })
+        const docRef = doc(db, 'Jobs', this.viewJob.id)
+        await updateDoc(docRef, { applied: arrayUnion(this.sitterKey) })
         this.viewJob.applied.push(this.sitterKey)
       } catch (error) {
         console.error('error: ', error)
       }
     },
     async unApply () {
-      await db.collection('Jobs').doc(this.viewJob.id).update({ applied: firebase.firestore.FieldValue.arrayRemove(this.sitterKey) })
+      const docRef = doc(db, 'Jobs', this.viewJob.id)
+      await updateDoc(docRef, { applied: arrayRemove(this.sitterKey) })
       this.viewJob.applied.splice(this.viewJob.applied.indexOf(this.sitterKey), 1)
       this.componentKey += 1
     },

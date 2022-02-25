@@ -25,6 +25,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
@@ -80,7 +81,9 @@ export default {
         this.saving = true
         this.parent.type = 'parent'
         try {
-          await db.collection('Users').doc(this.$q.localStorage.getItem('reg_uid')).set(this.parent)
+          const docRef = doc(db, 'Users', this.$q.localStorage.getItem('reg_uid'))
+          console.log('docRef: ', docRef)
+          await setDoc(docRef, this.parent)
           this.$store.commit('setUserKey', this.$q.localStorage.getItem('reg_uid'))
           this.$store.commit('setCurrentUser', this.parent)
           this.$store.commit('setCurrentLocation', 'Home')

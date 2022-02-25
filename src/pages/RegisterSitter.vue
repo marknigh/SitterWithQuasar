@@ -52,6 +52,7 @@
 <script>
 import { date } from 'quasar'
 import { required } from 'vuelidate/lib/validators'
+import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
@@ -105,7 +106,8 @@ export default {
       } else {
         this.saving = true
         try {
-          await db.collection('Users').doc(this.$q.localStorage.getItem('reg_uid')).set(this.register)
+          const docRef = doc(db, 'Users', this.$q.localStorage.getItem('reg_uid'))
+          await setDoc(docRef, this.register)
           this.$store.commit('setUserKey', this.$q.localStorage.getItem('reg_uid'))
           this.$store.commit('setCurrentUser', this.register)
           this.$store.commit('setCurrentLocation', 'Home')

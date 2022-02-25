@@ -53,9 +53,9 @@
 </template>
 
 <script>
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 import { date } from 'quasar'
-import { UpdateUserProfile } from '../utils/profile'
 import ProfilePic from '../components/ProfilePic'
 
 export default {
@@ -72,10 +72,16 @@ export default {
   },
   async created () {
     try {
-      let docReference = await db.collection('Users').doc(this.$store.getters.getKey).get()
-      this.sitter = docReference.data()
-      this.sitter.id = docReference.id
-      this.$store.commit('setCurrentLocation', 'Your Profile')
+      let docRef = doc(db, 'Users', this.$store.getters.getKey)
+      let docSnap = await getDoc(docRef)
+
+      if (docSnap.exists()) {
+        this.sitter = docSnap.data()
+        this.sitter.id = docSnap.id
+        this.$store.commit('setCurrentLocation', 'Your Profile')
+      } else {
+        console.error('No Document')
+      }
     } catch (error) {
       console.log('error: ', error)
     }
@@ -91,8 +97,10 @@ export default {
     }
   },
   methods: {
-    save () {
-      UpdateUserProfile(this.sitter).then(() => {
+    async save () {
+      try {
+        const sitterProfile = doc(db, 'Users', this.sitter.id)
+        await updateDoc(sitterProfile, this.sitter)
         this.$store.commit('setCurrentUser', this.sitter)
         this.$q.notify({
           message: 'Your Profile Was Saved',
@@ -101,7 +109,9 @@ export default {
           color: 'secondary',
           timeout: 1000
         })
-      })
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 }

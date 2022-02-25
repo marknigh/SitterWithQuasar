@@ -25,6 +25,7 @@
 <script>
 import { db } from '../boot/firebase'
 import { date } from 'quasar'
+import { collection, getDocs, query, where } from 'firebase/firestore'
 
 export default {
   name: 's_parents',
@@ -36,7 +37,9 @@ export default {
   },
   async created () {
     try {
-      let querySnapshot = await db.collection('Users').where('type', '==', 'parent').get()
+      const parentColRef = collection(db, 'Users')
+      const q = query(parentColRef, where('type', '==', 'parent'))
+      const querySnapshot = await getDocs(q)
       querySnapshot.forEach((document) => {
         let parent = document.data()
         parent.parentID = document.id

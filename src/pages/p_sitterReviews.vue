@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { query, collection, where, getDocs } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 import ParentSitterReviewList from '../components/ParentSitterReviewList'
 
@@ -27,7 +28,9 @@ export default {
   async created () {
     this.loading = true
     this.$q.loading.show()
-    let querySnapshot = await db.collection('Reviews').where('sitter', '==', this.sitter.id).get()
+    const reviewRef = collection(db, 'Reviews')
+    const q = query(reviewRef, where('sitter', '==', this.sitter.id))
+    let querySnapshot = await getDocs(q)
     querySnapshot.forEach((docRefence) => {
       this.reviews.push(docRefence.data())
     })

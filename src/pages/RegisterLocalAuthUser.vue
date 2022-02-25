@@ -57,9 +57,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
 import { required, email, sameAs, minLength } from 'vuelidate/lib/validators'
-
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 export default {
   name: 'RegisterLocalAuthUser',
   data () {
@@ -94,7 +93,7 @@ export default {
       } else {
         this.loading = true
         try {
-          let userInfo = await firebase.auth().createUserWithEmailAndPassword(this.username, this.password)
+          let userInfo = await createUserWithEmailAndPassword(getAuth(), this.username, this.password)
           this.$q.localStorage.set('reg_email', userInfo.user.email)
           this.$q.localStorage.set('reg_uid', userInfo.user.uid)
           this.loading = false

@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { date } from 'quasar'
 import { db } from '../boot/firebase'
 
@@ -60,12 +61,14 @@ export default {
   data () {
     return {
       jobs: [],
-      numberOfJobsCreated: undefined
+      numberOfJobsCreated: 0
     }
   },
   async created () {
-    let querySnapShot = await db.collection('Jobs').where('parentID', '==', this.parent.id).get()
-    this.numberOfJobsCreated = querySnapShot.size
+    const colRef = collection(db, 'Jobs')
+    const q = query(colRef, where('parentID', '==', this.parent.parentID))
+    const querySnapShot = await getDocs(q)
+    querySnapShot.size > 0 ? this.numberOfJobsCreated = querySnapShot.size : this.numberOfJobsCreated = '0'
     querySnapShot.forEach((document) => {
       let parent = document.data()
       this.jobs.push(parent)

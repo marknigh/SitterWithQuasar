@@ -44,7 +44,7 @@
               </div>
 
               <q-card-actions>
-                <google-login-mobile />
+                <google-login />
               </q-card-actions>
 
               <q-card-actions>
@@ -58,8 +58,10 @@
 </template>
 
 <script>
-import { loginUserAuth, getUserData } from '../utils/auth'
-import GoogleLoginMobile from '../components/GoogleLoginMobile'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getDoc, doc } from 'firebase/firestore'
+import { db } from '../boot/firebase'
+import GoogleLogin from '../components/GoogleLogin'
 import FacebookLoginMobile from '../components/FacebookLoginMobile.vue'
 
 export default {
@@ -73,26 +75,33 @@ export default {
     }
   },
   components: {
-    'google-login-mobile': GoogleLoginMobile,
+    'google-login': GoogleLogin,
     'facebook-login-mobile': FacebookLoginMobile
   },
   methods: {
     loginUser () {
       this.loading = true
-      loginUserAuth(this.username, this.password).then((userInfo) => {
-        getUserData(userInfo.user.uid).then((snapshot) => {
-          snapshot.forEach(doc => {
-            this.$store.commit('setUserKey', doc.id)
-            this.$store.commit('setCurrentUser', doc.data())
+      signInWithEmailAndPassword(getAuth(), this.username, this.password).then((userCredential) => {
+        console.log('userCredentials: ', userCredential)
+        const docRef = doc(db, 'Users', userCredential.user.uid)
+        getDoc(docRef).then((docSnap) => {
+          if (docSnap.exists()) {
+            this.$store.commit('setUserKey', docSnap.id)
+            this.$store.commit('setCurrentUser', docSnap.data())
             this.$store.commit('setCurrentLocation', 'Home')
-            if (doc.data().type === 'sitter') {
+            if (docSnap.data().type === 'sitter') {
               this.$router.push('/sitter')
             } else {
               this.$router.push('/parent')
             }
-          })
+          } else {
+            console.log('')
+          }
+        }).catch((error) => {
+          console.log('error on getDoc: ', error)
+          this.loading = false
+          this.loginError = true
         })
-        this.loading = false
       }).catch((error) => {
         console.error('error: ', error)
         this.loading = false

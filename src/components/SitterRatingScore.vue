@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
@@ -25,7 +26,9 @@ export default {
     }
   },
   async created () {
-    let querySnapshot = await db.collection('Reviews').where('sitter', '==', this.sitter.id).get()
+    const reviewRef = collection(db, 'Reviews')
+    const q = query(reviewRef, where('sitter', '==', this.sitter.id))
+    let querySnapshot = await getDocs(q)
     querySnapshot.forEach((documentSnapshot) => {
       let review = documentSnapshot.data()
       review.id = documentSnapshot.id

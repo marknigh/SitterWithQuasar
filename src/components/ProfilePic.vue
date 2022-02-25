@@ -20,7 +20,7 @@
 import { Plugins, CameraResultType, CameraSource } from '../../src-capacitor/node_modules/@capacitor/core'
 import { storage } from '../boot/firebase'
 import { sanitizePic } from '../utils/misc'
-
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 const { Camera } = Plugins
 
 export default {
@@ -74,10 +74,11 @@ export default {
       let hex = sanitizePic(event.target.files[0]).then(() => {
         if (hex) {
           console.log('event:', event.target.files[0])
-          var storageRef = storage.ref()
-          var imageRef = storageRef.child('userImages/' + this.$store.getters.getKey)
-          imageRef.put(event.target.files[0]).then((snapshot) => {
-            snapshot.ref.getDownloadURL().then((downloadURL) => {
+          const imageRef = ref(storage, 'userImages/')
+          console.log('imageRef: ', imageRef)
+          uploadBytes(imageRef, event.target.files[0]).then((snapshot) => {
+            console.log('snapshot: ', snapshot)
+            getDownloadURL(snapshot.ref).then((downloadURL) => {
               this.sitter.photoURL = downloadURL
             })
           })

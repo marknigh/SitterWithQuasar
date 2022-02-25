@@ -17,6 +17,9 @@
           </div>
           <q-item class="q-pt-lg" v-for="job in filterJobs" :key="job.id" clickable v-ripple @click="editJob(job)">
 
+            <q-item-section thumbnail>
+              <job-status :job="job"></job-status>
+            </q-item-section>
             <q-item-section>
               <q-item-label> {{ job.title }}</q-item-label>
               <q-item-label caption> {{ jobDaysOld(job.entryDate) }} </q-item-label>
@@ -26,6 +29,7 @@
               <q-item-label> {{ job.startDate | displayDate }} </q-item-label>
               <q-item-label> Applied: {{ job.applied ? job.applied.length : 0 }} <q-icon v-if="job.awarded" color="yellow" name="eva-award"/> </q-item-label>
             </q-item-section>
+
           </q-item>
         </q-list>
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
@@ -37,6 +41,8 @@
 <script>
 import { db } from '../boot/firebase'
 import { date } from 'quasar'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
+import JobStatus from '../components/JobStatus.vue'
 
 export default {
   name: 'p_jobs',
@@ -47,13 +53,20 @@ export default {
       filter: 'Active'
     }
   },
+  components: {
+    'job-status': JobStatus
+  },
   async created () {
-    const querySnapshot = await db.collection('Jobs').where('parentID', '==', this.$store.getters.getKey).get()
-    querySnapshot.forEach((document) => {
-      let job = document.data()
-      job.id = document.id
-      this.$store.commit('setCurrentLocation', 'Your Active Jobs')
-      this.jobs.push(job)
+    const jobsRef = collection(db, 'Jobs')
+    const q = query(jobsRef, where('parentID', '==', this.$store.getters.getKey))
+    await onSnapshot(q, (querySnapshot) => {
+      this.jobs = []
+      querySnapshot.forEach((document) => {
+        let job = document.data()
+        job.id = document.id
+        this.$store.commit('setCurrentLocation', 'Your Active Jobs')
+        this.jobs.push(job)
+      })
     })
   },
   computed: {

@@ -1,32 +1,36 @@
-import firebase from 'firebase'
-import { db, auth } from '../boot/firebase'
+import { GoogleAuthProvider, FacebookAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, getAuth } from 'firebase/auth'
 import { cfaSignOut } from 'capacitor-firebase-auth'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { db } from '../boot/firebase'
 
-const googleProvider = new firebase.auth.GoogleAuthProvider()
-const facebookProvider = new firebase.auth.FacebookAuthProvider()
+const auth = getAuth()
+const googleProvider = new GoogleAuthProvider()
+const facebookProvider = new FacebookAuthProvider()
 
 function registrationAuth (email, password) {
-  return firebase.auth().createUserWithEmailAndPassword(email, password)
+  return createUserWithEmailAndPassword(auth, email, password)
 }
 
-function createUserInDB (user) {
-  return db.collection('Users').add(user)
+async function createUserInDB (user) {
+  return setDoc(doc(db, 'users', user))
 }
 
 function loginUserAuth (email, password) {
-  return firebase.auth().signInWithEmailAndPassword(email, password)
+  return signInWithEmailAndPassword(auth, email, password)
 }
 
 function loginUserAuthGoogle () {
-  return auth.signInWithPopup(googleProvider)
+  return signInWithPopup(googleProvider)
 }
 
 function loginUserAuthFacebook () {
-  return firebase.auth().signInWithPopup(facebookProvider)
+  return signInWithPopup(facebookProvider)
 }
 
-function getUserData (id) {
-  return db.collection('Users').doc(id).get()
+async function getUserData (id) {
+  console.log('getUserData: ', id)
+  const docRef = doc(db, 'id', id)
+  return getDoc(docRef)
 }
 
 function getUserDataRegister (docRef) {

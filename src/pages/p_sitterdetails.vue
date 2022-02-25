@@ -59,10 +59,6 @@ export default {
       return this.sitter.name + '\'s Reviews'
     }
   },
-  data () {
-    return {
-    }
-  },
   components: {
     'sitter-rating-score': SitterRatingScore,
     'sitter-jobs-won': SitterJobsWon

@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
@@ -35,9 +36,11 @@ export default {
   async created () {
     this.loading = true
     this.$q.loading.show()
-    let querySnapshot = await db.collection('Users').where('type', '==', 'sitter').get()
+    const usersRef = collection(db, 'Users')
+    const q = query(usersRef, where('type', '==', 'sitter'))
+    const querySnapshot = await getDocs(q)
     querySnapshot.forEach((documentSnapshot) => {
-      let sitter = documentSnapshot.data()
+      const sitter = documentSnapshot.data()
       sitter.id = documentSnapshot.id
       this.$store.commit('setCurrentLocation', 'All Active Sitters')
       this.sitters.push(sitter)

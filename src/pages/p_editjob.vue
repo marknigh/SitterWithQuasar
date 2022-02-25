@@ -55,10 +55,6 @@
           <q-separator/>
         </div>
 
-        <div class="row">
-          <q-checkbox v-model="editJob.active" label="Active" />
-        </div>
-
         <div class="q-pa-sm">
           <q-btn class="full-width" :disable="disabledField" color="primary" label="save" @click="saveJob"/>
         </div>
@@ -71,6 +67,7 @@ import { date } from 'quasar'
 import ParentWhoApplied from '../components/ParentWhoApplied'
 import { updateJob } from '../utils/jobs'
 import { db } from '../boot/firebase'
+import { doc, getDoc } from 'firebase/firestore'
 
 export default {
   name: 'EditJob',
@@ -90,9 +87,10 @@ export default {
   },
   async created () {
     try {
-      let docRef = await db.collection('Jobs').doc(this.id).get()
-      this.editJob = docRef.data()
-      this.editJob.id = docRef.id
+      const docRef = doc(db, 'Jobs', this.id)
+      const docSnap = await getDoc(docRef)
+      this.editJob = docSnap.data()
+      this.editJob.id = docSnap.id
       this.sDateDisplay = date.formatDate(this.editJob.startDate.toDate(), 'MM-DD-YYYY')
       this.sDate = date.formatDate(this.editJob.startDate.toDate(), 'YYYY/MM/DD')
       this.sTime = this.convertTime()
