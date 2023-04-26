@@ -36,8 +36,7 @@ export default {
   async created () {
     this.loading = true
     this.$q.loading.show()
-    const usersRef = collection(db, 'Users')
-    const q = query(usersRef, where('type', '==', 'sitter'))
+    const q = query(collection(db, 'Users'), where('type', '==', 'sitter'))
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((documentSnapshot) => {
       const sitter = documentSnapshot.data()

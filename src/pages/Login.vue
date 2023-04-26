@@ -47,9 +47,9 @@
                 <google-login />
               </q-card-actions>
 
-              <q-card-actions>
+              <!-- <q-card-actions>
                 <facebook-login-mobile />
-              </q-card-actions>
+              </q-card-actions> -->
 
             </q-card>
         </q-page>
@@ -62,7 +62,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { getDoc, doc } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 import GoogleLogin from '../components/GoogleLogin'
-import FacebookLoginMobile from '../components/FacebookLoginMobile.vue'
+// import FacebookLoginMobile from '../components/FacebookLoginMobile.vue'
 
 export default {
   name: 'Login',
@@ -75,8 +75,8 @@ export default {
     }
   },
   components: {
-    'google-login': GoogleLogin,
-    'facebook-login-mobile': FacebookLoginMobile
+    'google-login': GoogleLogin
+    // 'facebook-login-mobile': FacebookLoginMobile
   },
   methods: {
     loginUser () {

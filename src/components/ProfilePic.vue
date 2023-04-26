@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import { Plugins, CameraResultType, CameraSource } from '../../src-capacitor/node_modules/@capacitor/core'
+// import { Plugins, CameraResultType, CameraSource } from '@capacitor/core'
 import { storage } from '../boot/firebase'
 import { sanitizePic } from '../utils/misc'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-const { Camera } = Plugins
+// const { Camera } = Plugins
 
 export default {
   name: 'ProfilePic',
@@ -48,28 +48,28 @@ export default {
         this.$refs.file.click()
       }
     },
-    async capturePic () {
-      console.log('capturePic')
-      const image = await Camera.getPhoto({
-        quality: 50,
-        resultType: CameraResultType.DataUrl,
-        source: CameraSource.Camera
-      })
-      // image.webPath will contain a path that can be set as an image src.
-      // You can access the original file using image.path, which can be
-      // passed to the Filesystem API to read the raw data of the image,
-      // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-      console.log('image.base64String: ', image)
-      let file = image.dataUrl
-      console.log('file: ', file)
-      var storageRef = storage.ref()
-      var imageRef = storageRef.child('userImages/' + this.$store.getters.getKey)
-      imageRef.putString(file, 'data_url', { contentType: 'image/jpg' }).then((snapshot) => {
-        snapshot.ref.getDownloadURL().then((downloadURL) => {
-          this.sitter.photoURL = downloadURL
-        })
-      })
-    },
+    // async capturePic () {
+    //   console.log('capturePic')
+    //   const image = await Camera.getPhoto({
+    //     quality: 50,
+    //     resultType: CameraResultType.DataUrl,
+    //     source: CameraSource.Camera
+    //   })
+    //   // image.webPath will contain a path that can be set as an image src.
+    //   // You can access the original file using image.path, which can be
+    //   // passed to the Filesystem API to read the raw data of the image,
+    //   // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+    //   console.log('image.base64String: ', image)
+    //   let file = image.dataUrl
+    //   console.log('file: ', file)
+    //   var storageRef = storage.ref()
+    //   var imageRef = storageRef.child('userImages/' + this.$store.getters.getKey)
+    //   imageRef.putString(file, 'data_url', { contentType: 'image/jpg' }).then((snapshot) => {
+    //     snapshot.ref.getDownloadURL().then((downloadURL) => {
+    //       this.sitter.photoURL = downloadURL
+    //     })
+    //   })
+    // },
     uploadPic (event) {
       let hex = sanitizePic(event.target.files[0]).then(() => {
         if (hex) {

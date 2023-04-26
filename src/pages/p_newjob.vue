@@ -51,6 +51,7 @@
 <script>
 import { date } from 'quasar'
 import { db } from '../boot/firebase'
+import { addDoc, collection } from 'firebase/firestore'
 import { required } from 'vuelidate/lib/validators'
 
 export default {
@@ -124,7 +125,7 @@ export default {
         const newDate = date.buildDate({ year: Number(this.sDate.substr(0, 4)), month: Number(this.sDate.substr(5, 2)), date: Number(this.sDate.substr(8, 2)) })
         this.newJob.startDate = newDate
         try {
-          let docReference = await db.collection('Jobs').add(this.newJob)
+          let docReference = await addDoc(collection(db, 'Jobs'), this.newJob)
           this.$q.notify({
             message: 'Your Job Was Save',
             icon: 'eva-done-all-outline',
