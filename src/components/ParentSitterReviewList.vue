@@ -7,7 +7,7 @@
           <q-item-label> {{ review.title }} </q-item-label>
           <q-item-label> <q-rating v-model="review.rating" :max="10" color="accent" readonly> </q-rating> ({{ review.rating }}) </q-item-label>
           <q-item-label> <q-avatar size="18px" color="info"> <q-icon name="person" /> </q-avatar> <parent-name :parentID="review.parentID" /> </q-item-label>
-          <q-item-label caption> Reviewed on {{ review.date | formatDate }} </q-item-label>
+          <q-item-label caption> Reviewed on {{ formatDate(review.date) }} </q-item-label>
         </q-item-section>
 
       </q-item>
@@ -15,10 +15,10 @@
     <div class="text-center">
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
         <q-fab color="accent" icon="eva-plus-outline" direction="up">
-          <q-fab-action color="amber" text-color="black" @click="openReviewDialog()" icon="eva-edit-outline" />
+          <q-fab-action color="amber" text-color="black" @click="dialog = true" icon="eva-edit-outline" />
         </q-fab>
       </q-page-sticky>
-      <write-review :dialog="dialog" :sitter="sitter" @closedDialog="dialog = !dialog"/>
+      <write-review :writeReviewDialog="dialog" :sitter="sitter" @closedDialog="dialog = !dialog"/>
     </div>
   </div>
   <div v-else>
@@ -52,15 +52,10 @@ export default {
       dialog: false
     }
   },
-  filters: {
+  methods: {
     formatDate: function (value) {
       let convertDate = value.toDate()
       return date.formatDate(convertDate, 'MMMM, DD YYYY')
-    }
-  },
-  methods: {
-    openReviewDialog () {
-      this.dialog = true
     }
   }
 }

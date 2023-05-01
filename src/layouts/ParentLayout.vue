@@ -34,7 +34,7 @@
             </q-item-section>
         </q-item>
         <q-separator/>
-        <q-item clickable tag="a" target="_blank" @click.native="profile()">
+        <q-item clickable tag="a" target="_blank" @click="profile()">
           <q-item-section avatar>
             <q-icon name="eva-info-outline" />
           </q-item-section>
@@ -43,7 +43,7 @@
             <q-item-label caption>Your Profile Information</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" @click.native="listSitters()">
+        <q-item clickable tag="a" target="_blank" @click="ListSitters()">
           <q-item-section avatar>
             <q-icon name="eva-people-outline" />
           </q-item-section>
@@ -52,7 +52,7 @@
             <q-item-label caption>All Active Sitters</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" @click.native="listJobs()">
+        <q-item clickable tag="a" target="_blank" @click="listJobs()">
           <q-item-section avatar>
             <q-icon name="eva-briefcase-outline" />
           </q-item-section>
@@ -61,7 +61,7 @@
             <q-item-label caption>Your Active Jobs</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" @click.native="signOut()">
+        <q-item clickable tag="a" target="_blank" @click="signOut()">
           <q-item-section avatar>
             <q-icon name="eva-log-out-outline" />
           </q-item-section>
@@ -98,7 +98,7 @@ export default {
     }
   },
   methods: {
-    listSitters () {
+    ListSitters () {
       this.$router.push('/parent/sitters')
     },
     listJobs () {
@@ -106,9 +106,6 @@ export default {
     },
     profile () {
       this.$router.push('/parent/profile')
-    },
-    signIn () {
-      this.$router.push('/')
     },
     signOut () {
       getAuth().signOut()

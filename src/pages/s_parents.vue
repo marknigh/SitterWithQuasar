@@ -6,7 +6,7 @@
 
         <q-item-section>
           <q-item-label>{{ parent.name }}</q-item-label>
-          <q-item-label caption> Member Since: {{ parent.dateJoined | displayDate }}</q-item-label>
+          <q-item-label caption> Member Since: {{ displayDate(parent.dateJoined) }}</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -47,16 +47,13 @@ export default {
       })
       this.isLoading = false
     } catch (error) {
-      console.error('error: ', error)
     }
     this.$store.commit('setCurrentLocation', 'All Parents')
   },
-  filters: {
+  methods: {
     displayDate (value) {
       return date.formatDate(new Date(value.seconds * 1000), 'MMMM DD, YYYY')
-    }
-  },
-  methods: {
+    },
     viewParent (parent) {
       this.$router.push({ name: 'viewParent', params: { parent: parent } })
     }

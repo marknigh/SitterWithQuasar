@@ -17,7 +17,7 @@ export default {
             this.$router.push('/register')
           } else {
             snapshot.forEach(doc => {
-              console.log('doc: ', doc.data())
+              ('doc: ', doc.data())
               this.$store.commit('setUserKey', doc.id)
               this.$store.commit('setCurrentUser', doc.data())
               if (doc.data().type === 'sitter') {
@@ -29,7 +29,7 @@ export default {
           }
         })
       }).catch((error) => {
-        console.log('error: ', error)
+        ('error: ', error)
         this.loginError = true
       })
     }

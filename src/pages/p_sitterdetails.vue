@@ -45,13 +45,8 @@ import SitterJobsWon from '../components/SitterJobsWon'
 
 export default {
   name: 'SitterDetails',
-  props: {
-    sitter: {
-      type: Object,
-      required: true
-    }
-  },
   created () {
+    this.sitter = this.$store.getters.getSitterDetails
     this.$store.commit('setCurrentLocation', this.sitter.name)
   },
   computed: {
@@ -75,7 +70,7 @@ export default {
       return date.formatDate(new Date(sitterDateJoined.seconds * 1000), 'MMMM YYYY')
     },
     viewReviews () {
-      this.$router.push({ name: 'sitterReviews', params: { sitter: this.sitter } })
+      this.$router.push({ path: `/parent/sitters/reviews/${this.sitter.id}` })
     }
   }
 }

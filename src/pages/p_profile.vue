@@ -58,7 +58,6 @@ export default {
         this.loading = false
       }
     } catch (error) {
-      console.log('error: ', error)
       this.loading = false
     }
   },
@@ -78,7 +77,6 @@ export default {
           timeout: 1000
         })
       } catch (error) {
-        console.log('error', error)
         this.saving = false
       }
     }

@@ -1,4 +1,6 @@
 // Configuration for your app
+const ESLintPlugin = require('eslint-webpack-plugin')
+require('dotenv').config()
 
 module.exports = function (ctx) {
   return {
@@ -7,12 +9,12 @@ module.exports = function (ctx) {
     boot: [
       'firebase',
       'google-maps',
-      'vuelidate',
+      // 'vuelidate',
       'router_auth'
     ],
 
     css: [
-      'app.styl'
+      'app.sass'
     ],
 
     extras: [
@@ -27,71 +29,21 @@ module.exports = function (ctx) {
 
     // framework: 'all', // --- includes everything; for dev only!
     framework: {
+      lang: 'en-US',
       components: [
-        'QLayout',
-        'QHeader',
-        'QDrawer',
-        'QPageContainer',
-        'QPage',
-        'QToolbar',
-        'QToolbarTitle',
-        'QBtn',
-        'QIcon',
-        'QList',
-        'QItem',
-        'QItemSection',
-        'QItemLabel',
-        'QSlideItem',
-        'QPageSticky',
-        'QAvatar',
-        'QInput',
-        'QToggle',
-        'QSelect',
-        'QCheckbox',
-        'QDate',
-        'QPopupProxy',
-        'QCard',
-        'QCardSection',
-        'QCardActions',
-        'QSeparator',
-        'QTime',
-        'QChip',
-        'QRating',
-        'QRadio',
-        'QUploader',
-        'QTabPanels',
-        'QTabPanel',
-        'QOptionGroup',
-        'QImg',
-        'QBadge',
-        'QSpinner',
-        'QScrollArea',
-        'QBtnToggle',
-        'QBanner',
-        'QDialog',
-        'QSpace',
-        'QBar',
-        'QFab',
-        'QFabAction',
-        'QSkeleton',
-        'QParallax'
+
       ],
 
       directives: [
-        'Ripple', 'GoBack', 'ClosePopup'
+        'Ripple', 'ClosePopup'
       ],
 
       // Quasar plugins
       plugins: [
-        'Notify',
-        'Dialog',
-        'Loading',
-        'LocalStorage',
-        'AppVisibility'
+        'Loading', 'Dialog'
       ]
 
       // iconSet: 'ionicons-v4'
-      // lang: 'de' // Quasar language
     },
 
     supportIE: false,
@@ -102,26 +54,32 @@ module.exports = function (ctx) {
       ugligyOptions: {
         compress: { drop_console: true }
       },
+      env: require('dotenv').config({ override: true }),
       // vueCompiler: true,
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
-      extendWebpack (cfg) {
-        cfg.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /node_modules/,
-          options: {
-            cache: true
-          }
-        })
+      // extendWebpack (cfg) {
+      //   cfg.module.rules.push({
+      //     enforce: 'pre',
+      //     test: /\.(js|vue)$/,
+      //     loader: 'eslint-loader',
+      //     exclude: /node_modules/,
+      //     options: {
+      //       cache: true
+      //     }
+      //   })
+      // },
+      chainWebpack (chain) {
+        chain
+          .plugin('eslint-webpack-plugin')
+          .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
       }
     },
 
     devServer: {
       // https: true,
-      // port: 8080,
+      port: 8080,
       open: true // opens browser window automatically
     },
 
@@ -177,7 +135,7 @@ module.exports = function (ctx) {
       // id: 'org.cordova.quasar.app'
     },
     capacitor: {
-      version: '1.3.0'
+      // version: '1.3.0'
     },
     electron: {
       // bundler: 'builder', // or 'packager'

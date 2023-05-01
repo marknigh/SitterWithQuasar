@@ -5,8 +5,8 @@ admin.initializeApp()
 
 exports.newJobPosted = functions.firestore.document('Jobs/{jobId}')
   .onCreate(async (snapshot, context) => {
-    console.log('snapshot: ', snapshot)
-    console.log('context: ', context)
+    ('snapshot: ', snapshot)
+    ('context: ', context)
 
     const tokenArray = []
     const db = admin.firestore()
@@ -28,10 +28,10 @@ exports.newJobPosted = functions.firestore.document('Jobs/{jobId}')
     }
 
     admin.messaging().sendMulticast(message).then((response) => {
-      console.log('success')
+      ('success')
       return 'success'
     }).catch((error) => {
-      console.log('error', error)
+      ('error', error)
     })
 
 })

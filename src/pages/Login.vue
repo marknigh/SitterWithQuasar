@@ -2,7 +2,7 @@
   <q-layout>
       <q-page-container>
         <q-page class="flex flex-center">
-            <q-card flat class="my-card">
+            <q-card flat>
 
               <q-card-section>
                 <h4 class="text-center text-weight-thin">Warson Woods Jobs</h4>
@@ -82,7 +82,6 @@ export default {
     loginUser () {
       this.loading = true
       signInWithEmailAndPassword(getAuth(), this.username, this.password).then((userCredential) => {
-        console.log('userCredentials: ', userCredential)
         const docRef = doc(db, 'Users', userCredential.user.uid)
         getDoc(docRef).then((docSnap) => {
           if (docSnap.exists()) {
@@ -94,26 +93,17 @@ export default {
             } else {
               this.$router.push('/parent')
             }
-          } else {
-            console.log('')
           }
-        }).catch((error) => {
-          console.log('error on getDoc: ', error)
-          this.loading = false
-          this.loginError = true
         })
-      }).catch((error) => {
-        console.error('error: ', error)
-        this.loading = false
-        this.loginError = true
       })
     }
   }
 }
 </script>
 
-<style lang="stylus">
-.my-card
-  width 100%
-  max-width 350px
+<style lang="css" scoped>
+.my-card {
+  width: 100%;
+  max-width: 350px;
+}
 </style>

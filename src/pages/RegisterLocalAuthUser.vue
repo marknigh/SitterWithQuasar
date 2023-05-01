@@ -57,10 +57,14 @@
 </template>
 
 <script>
-import { required, email, sameAs, minLength } from 'vuelidate/lib/validators'
+import { useVuelidate } from '@vuelidate/core'
+import { required, email, minLength, sameAs } from '@vuelidate/validators'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 export default {
   name: 'RegisterLocalAuthUser',
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data () {
     return {
       username: '',
@@ -69,10 +73,12 @@ export default {
       loading: false
     }
   },
-  validations: {
-    username: { required, email },
-    password: { required, minLength: minLength(6) },
-    confirmPassword: { sameAsPassword: sameAs('password') }
+  validations () {
+    return {
+      username: { required, email },
+      password: { required, minLength: minLength(6) },
+      confirmPassword: { sameAsPassword: sameAs('password') }
+    }
   },
   computed: {
     userNameErrors () {
@@ -89,7 +95,6 @@ export default {
     async registerUser () {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        console.log('errors')
       } else {
         this.loading = true
         try {
@@ -99,7 +104,6 @@ export default {
           this.loading = false
           this.$router.push('/register-user-type')
         } catch (error) {
-          console.log('error: ', error)
           this.loading = false
           this.$q.notify({
             color: 'red',
@@ -115,8 +119,9 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-.my-card
-  width 100%
-  max-width 350px
+<style lang="css" scoped>
+my-card {
+  width: 100%;
+  max-width: 350px;
+}
 </style>

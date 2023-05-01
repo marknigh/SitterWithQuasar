@@ -24,12 +24,16 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { useVuelidate } from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
   name: 'RegisterParent',
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data () {
     return {
       saving: false,
@@ -46,13 +50,15 @@ export default {
       }
     }
   },
-  validations: {
-    parent: {
-      name: { required },
-      address: { required },
-      city: { required },
-      state: { required },
-      zip: { required }
+  validations () {
+    return {
+      parent: {
+        name: { required },
+        address: { required },
+        city: { required },
+        state: { required },
+        zip: { required }
+      }
     }
   },
   computed: {
@@ -76,13 +82,11 @@ export default {
     async completeRegistration () {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        console.log('errors')
       } else {
         this.saving = true
         this.parent.type = 'parent'
         try {
           const docRef = doc(db, 'Users', this.$q.localStorage.getItem('reg_uid'))
-          console.log('docRef: ', docRef)
           await setDoc(docRef, this.parent)
           this.$store.commit('setUserKey', this.$q.localStorage.getItem('reg_uid'))
           this.$store.commit('setCurrentUser', this.parent)
@@ -90,7 +94,6 @@ export default {
           this.saving = false
           this.$router.push('/parent')
         } catch (error) {
-          console.log('error: ', error)
           this.saving = false
         }
       }

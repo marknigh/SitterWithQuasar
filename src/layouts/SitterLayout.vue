@@ -40,7 +40,7 @@
 
         <q-separator/>
 
-        <q-item clickable tag="a" target="_blank" @click.native="profile()">
+        <q-item clickable tag="a" target="_blank" @click="profile()">
           <q-item-section avatar>
             <q-icon name="eva-person-outline" />
           </q-item-section>
@@ -49,7 +49,7 @@
             <q-item-label caption>Your Profile Information</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" @click.native="listParents()">
+        <q-item clickable tag="a" target="_blank" @click="listParents()">
           <q-item-section avatar>
             <q-icon name="eva-people-outline" />
           </q-item-section>
@@ -58,7 +58,7 @@
             <q-item-label caption>All Active Parents</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" @click.native="listJobs()">
+        <q-item clickable tag="a" target="_blank" @click="listJobs()">
           <q-item-section avatar>
             <q-icon name="eva-briefcase-outline" />
           </q-item-section>
@@ -67,7 +67,7 @@
             <q-item-label caption>Active Jobs</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" target="_blank" @click.native="listReviews()">
+        <q-item clickable tag="a" target="_blank" @click="listReviews()">
           <q-item-section avatar>
             <q-icon name="eva-edit-outline" />
           </q-item-section>
@@ -76,7 +76,7 @@
             <q-item-label caption>Reviews Written About You</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="!currentUser" clickable tag="a" target="_blank" @click.native="signIn()">
+        <q-item v-if="!currentUser" clickable tag="a" target="_blank" @click="signIn()">
           <q-item-section avatar>
             <q-icon name="eva-log-in-outline" />
           </q-item-section>
@@ -85,7 +85,7 @@
             <q-item-label caption>Sign In to Your Account</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-else clickable tag="a" target="_blank" @click.native="signOut()">
+        <q-item v-else clickable tag="a" target="_blank" @click="signOut()">
           <q-item-section avatar>
             <q-icon name="eva-log-out-outline" />
           </q-item-section>

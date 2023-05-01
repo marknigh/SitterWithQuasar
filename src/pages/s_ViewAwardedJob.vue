@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style lang='stylus' scoped>
+<style lang="sass" scoped>
 .image-size
   max-height: 75px
   max-width: 500px

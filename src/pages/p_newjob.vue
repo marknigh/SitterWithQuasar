@@ -52,10 +52,12 @@
 import { date } from 'quasar'
 import { db } from '../boot/firebase'
 import { addDoc, collection } from 'firebase/firestore'
-import { required } from 'vuelidate/lib/validators'
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 
 export default {
   name: 'NewJob',
+  setup: () => ({ v$: useVuelidate() }),
   data () {
     return {
       sDate: null,
@@ -78,13 +80,15 @@ export default {
 
     }
   },
-  validations: {
-    newJob: {
-      title: { required },
-      description: { required }
-    },
-    sDateDisplay: { required },
-    sTime: { required }
+  validations () {
+    return {
+      newJob: {
+        title: { required },
+        description: { required }
+      },
+      sDateDisplay: { required },
+      sTime: { required }
+    }
   },
   watch: {
     sDate () {
@@ -104,23 +108,23 @@ export default {
   },
   computed: {
     titleErrors () {
-      return (this.$v.newJob.title.$invalid && this.$v.newJob.title.$dirty)
+      return this.v$.newJob.title.$invalid && this.v$.newJob.title.$dirty
     },
     descErrors () {
-      return (this.$v.newJob.description.$invalid && this.$v.newJob.description.$dirty)
+      return this.v$.newJob.description.$invalid && this.v$.newJob.description.$dirty
     },
     startDateErrors () {
-      return (this.$v.sDateDisplay.$invalid && this.$v.sDateDisplay.$dirty)
+      return this.v$.sDateDisplay.$invalid && this.v$.sDateDisplay.$dirty
     },
     startTimeErrors () {
-      return (this.$v.sTime.$invalid && this.$v.sTime.$dirty)
+      return this.v$.sTime.$invalid && this.v$.sTime.$dirty
     }
   },
   methods: {
     async saveJob () {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        this.$v.$touch()
+      this.v$.$touch()
+      if (this.v$.$invalid) {
+        this.v$.$touch()
       } else {
         const newDate = date.buildDate({ year: Number(this.sDate.substr(0, 4)), month: Number(this.sDate.substr(5, 2)), date: Number(this.sDate.substr(8, 2)) })
         this.newJob.startDate = newDate
@@ -137,7 +141,6 @@ export default {
             this.$router.push({ name: 'editJob', params: { id: docReference.id } })
           }, 3000)
         } catch (error) {
-          console.log('error: ', error)
         }
       }
     }

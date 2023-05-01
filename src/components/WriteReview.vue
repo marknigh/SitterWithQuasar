@@ -1,12 +1,6 @@
 <template>
   <div style="display: inline">
-    <q-dialog
-        v-model="dialog"
-        persistent
-        :maximized="maximizedToggle"
-        transition-show="slide-up"
-        transition-hide="slide-down"
-      >
+    <q-dialog v-model="dialogOpen">
       <q-card class="bg-white text-blue">
         <q-bar class="bg-blue text-white">
           <q-space />
@@ -50,8 +44,16 @@ export default {
     sitter: {
       type: Object
     },
-    dialog: {
-      type: Boolean
+    writeReviewDialog: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    dialogOpen: {
+      get () {
+        return this.writeReviewDialog
+      }
     }
   },
   data () {
@@ -79,7 +81,6 @@ export default {
         })
         this.$emit('closedDialog')
       } catch (error) {
-        console.log('error: ', error)
       }
     }
   }

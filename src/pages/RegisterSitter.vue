@@ -51,12 +51,16 @@
 
 <script>
 import { date } from 'quasar'
-import { required } from 'vuelidate/lib/validators'
+import { useVuelidate } from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 
 export default {
   name: 'RegisterSitter',
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data () {
     return {
       genderOptions: [{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }],
@@ -73,12 +77,14 @@ export default {
       }
     }
   },
-  validations: {
-    register: {
-      name: { required },
-      gender: { required },
-      grade: { required },
-      birthday: { required }
+  validations () {
+    return {
+      register: {
+        name: { required },
+        gender: { required },
+        grade: { required },
+        birthday: { required }
+      }
     }
   },
   computed: {
@@ -102,7 +108,6 @@ export default {
     async completeRegistration () {
       this.$v.$touch()
       if (this.$v.$invalid) {
-        console.log('errors')
       } else {
         this.saving = true
         try {
@@ -114,12 +119,12 @@ export default {
           this.saving = false
           this.$router.push('/sitter')
         } catch (error) {
-          console.log('error: ', error)
           this.saving = false
         }
       }
     }
   }
+
 }
 </script>
 

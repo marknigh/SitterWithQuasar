@@ -7,7 +7,7 @@
           <q-item-label> {{ review.title }} </q-item-label>
           <q-item-label> <q-rating v-model="review.rating" :max="10" color="accent" readonly> </q-rating> ({{ review.rating }}) </q-item-label>
           <q-item-label> <q-avatar size="18px" color="info"> <q-icon name="person" /> </q-avatar> <parent-name :parentID="review.parentID" /> </q-item-label>
-          <q-item-label caption> Reviewed on {{ review.date | formatDate }} </q-item-label>
+          <q-item-label caption> Reviewed on {{ formatDate(review.date) }} </q-item-label>
         </q-item-section>
 
       </q-item>
@@ -49,7 +49,7 @@ export default {
   components: {
     'parent-name': ParentName
   },
-  filters: {
+  methods: {
     formatDate: function (value) {
       let convertDate = value.toDate()
       return date.formatDate(convertDate, 'MMMM, DD YYYY')
@@ -67,7 +67,6 @@ export default {
       })
       this.isLoading = false
     } catch (error) {
-      console.log('error: ', error)
       this.isLoading = false
     }
     this.$store.commit('setCurrentLocation', 'Your Reviews')

@@ -46,8 +46,8 @@
         </div>
 
         <div class="row">
-          <template v-for="who in editJob.applied">
-            <p-who-applied :who="who" :job="editJob" :key="who.id" @awardJob="awardJob(who)"></p-who-applied>
+          <template v-for="who in editJob.applied" :key="who.id">
+            <p-who-applied :who="who" :job="editJob" @awardJob="awardJob(who)"></p-who-applied>
           </template>
         </div>
 
@@ -71,7 +71,7 @@ import { doc, getDoc } from 'firebase/firestore'
 
 export default {
   name: 'EditJob',
-  props: ['id'],
+  // props: ['id'],
   components: {
     'p-who-applied': ParentWhoApplied
   },
@@ -87,20 +87,18 @@ export default {
   },
   async created () {
     try {
-      const docRef = doc(db, 'Jobs', this.id)
+      const docRef = doc(db, 'Jobs', this.$route.params.id)
       const docSnap = await getDoc(docRef)
-      this.editJob = docSnap.data()
-      this.editJob.id = docSnap.id
+      this.editJob = { id: docSnap.id, ...docSnap.data() }
       this.sDateDisplay = date.formatDate(this.editJob.startDate.toDate(), 'MM-DD-YYYY')
       this.sDate = date.formatDate(this.editJob.startDate.toDate(), 'YYYY/MM/DD')
       this.sTime = this.convertTime()
-      if (this.editJob.applied.length > 0) {
+      if (this.editJob.awarded) {
         this.disabledField = true
       }
       this.$store.commit('setCurrentLocation', 'Edit Job')
       this.isLoading = false
     } catch (error) {
-      console.log('error: ', error)
     }
   },
   watch: {
@@ -136,7 +134,6 @@ export default {
           timeout: 1000
         })
       } catch (err) {
-        console.log('err: ', err)
       }
     },
     awardJob (who) {
@@ -145,11 +142,10 @@ export default {
         message: 'Would you like to Award this Job. This can NOT be undone?',
         cancel: true
       }).onOk(async () => {
-        console.log('who: ', who)
         await db.collection('Jobs').doc(this.id).update({ 'awarded': who })
         this.$set(this.editJob, 'awarded', who)
       }).onCancel(() => {
-        console.log('pressed cancelled')
+        ('pressed cancelled')
       })
     }
   }

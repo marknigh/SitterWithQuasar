@@ -79,7 +79,6 @@ export default {
         this.sDateDisplay = date.formatDate(this.viewJob.startDate.toDate(), 'MM-DD-YYYY')
         this.isLoading = false
       } catch (error) {
-        console.error('error: ', error)
       }
       this.$store.commit('setCurrentLocation', 'Job Details')
     },
@@ -89,7 +88,6 @@ export default {
         await updateDoc(docRef, { applied: arrayUnion(this.sitterKey) })
         this.viewJob.applied.push(this.sitterKey)
       } catch (error) {
-        console.error('error: ', error)
       }
     },
     async unApply () {

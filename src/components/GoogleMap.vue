@@ -29,12 +29,10 @@ export default {
     this.parent = docRef.data()
     this.parentAddress = this.parent.address + ' ' + this.parent.zip
     const google = await gmapsInit()
-    console.log('google', google)
     const map = new google.maps.Map(this.$el, this.mapConfig)
     const geocoder = new google.maps.Geocoder()
     geocoder.geocode({ address: this.parentAddress }, (results, status) => {
       if (status !== 'OK' || !results[0]) {
-        console.log('geocode:', results, status)
       }
       map.setCenter(results[0].geometry.location)
       map.fitBounds(results[0].geometry.viewport)
@@ -48,7 +46,8 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-.google-maps
+<style lang="css" scoped>
+.google-maps {
   height: 300px;
+}
 </style>

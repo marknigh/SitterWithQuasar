@@ -11,9 +11,14 @@
 // import { Plugins } from '@capacitor/core'
 // import { db } from '../boot/firebase'
 // const { PushNotifications } = Plugins
+// import { useQuasar } from 'quasar'
 
 export default {
-  name: 'PageIndex',
+  name: 'PageIndex'
+  // mounted () {
+  //   const $q = useQuasar()
+  //   $q.dark.set(true)
+  // }
   // mounted () {
   //   if (this.$q.platform !== 'web' && this.$store.getters.getType === 'sitter') {
   //     this.registerPush()
@@ -52,17 +57,17 @@ export default {
   //     )
   //   }
   // },
-  methods: {
-    registerPush () {
-      // PushNotifications.requestPermission().then((permission) => {
-      //   if (permission.granted) {
-      //     // Register with Apple / Google to receive push via APNS/FCM
-      //     PushNotifications.register()
-      //   } else {
-      //     // No permission for push granted
-      //   }
-      // })
-    }
-  }
+  // methods: {
+  //   registerPush () {
+  //     PushNotifications.requestPermission().then((permission) => {
+  //       if (permission.granted) {
+  //         // Register with Apple / Google to receive push via APNS/FCM
+  //         PushNotifications.register()
+  //       } else {
+  //         // No permission for push granted
+  //       }
+  //     })
+  //   }
+  // }
 }
 </script>

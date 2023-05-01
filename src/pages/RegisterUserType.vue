@@ -32,10 +32,14 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { useVuelidate } from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 
 export default {
   name: 'RegisterUserType',
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data () {
     return {
       type: null,
@@ -45,8 +49,10 @@ export default {
       ]
     }
   },
-  validations: {
-    type: { required }
+  validations () {
+    return {
+      type: { required }
+    }
   },
   computed: {
     typeError () {

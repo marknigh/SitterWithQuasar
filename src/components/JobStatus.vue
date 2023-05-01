@@ -4,7 +4,7 @@
       v-model="active"
       checked-icon="task_alt"
       unchecked-icon="highlight_off"
-      @input="toggleStatus($event)"
+      @update:model-value="toggleStatus($event)"
     />
   </div>
 </template>
@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     toggleStatus (event) {
-      console.log('event: ', event)
       let message
       event ? message = 'Would You Like To Mark This Job as Active' : message = 'Would You Like to Mark This Job As Inactive'
       this.$q.dialog({
@@ -39,7 +38,7 @@ export default {
       }).onOk(() => {
         this.updateDocument(event)
       }).onOk(() => {
-        // console.log('>>>> second OK catcher')
+        // ('>>>> second OK catcher')
       }).onCancel(() => {
         this.active = !this.active
       })

@@ -15,7 +15,7 @@
               </q-select>
             </div>
           </div>
-          <q-item class="q-pt-lg" v-for="job in filterJobs" :key="job.id" clickable v-ripple @click="editJob(job)">
+          <q-item class="q-pt-lg" v-for="job in filterJobs" :key="job.id" clickable v-ripple @click="EditJob(job)">
 
             <q-item-section thumbnail>
               <job-status :job="job"></job-status>
@@ -26,14 +26,14 @@
             </q-item-section>
 
             <q-item-section side top>
-              <q-item-label> {{ job.startDate | displayDate }} </q-item-label>
+              <q-item-label> {{ displayDate(job.startDate) }} </q-item-label>
               <q-item-label> Applied: {{ job.applied ? job.applied.length : 0 }} <q-icon v-if="job.awarded" color="yellow" name="eva-award"/> </q-item-label>
             </q-item-section>
 
           </q-item>
         </q-list>
         <q-page-sticky position="bottom-right" :offset="[18, 18]">
-          <q-btn round color="secondary" icon="eva-plus-outline" size="lg" @click.native="newJob()" />
+          <q-btn round color="secondary" icon="eva-plus-outline" size="lg" @click="NewJob()" />
         </q-page-sticky>
     </q-page>
 </template>
@@ -57,8 +57,7 @@ export default {
     'job-status': JobStatus
   },
   async created () {
-    const jobsRef = collection(db, 'Jobs')
-    const q = query(jobsRef, where('parentID', '==', this.$store.getters.getKey))
+    const q = query(collection(db, 'Jobs'), where('parentID', '==', this.$store.getters.getKey))
     await onSnapshot(q, (querySnapshot) => {
       this.jobs = []
       querySnapshot.forEach((document) => {
@@ -81,12 +80,15 @@ export default {
     }
   },
   methods: {
-    newJob () {
-      this.$store.commit('setCurrentLocation', 'New Job')
-      this.$router.push('/parent/newjob')
+    displayDate (value) {
+      return date.formatDate(value.toDate(), 'MMMM DD, YYYY')
     },
-    editJob (job) {
-      this.$router.push({ name: 'editJob', params: { id: job.id } })
+    NewJob () {
+      this.$store.commit('setCurrentLocation', 'New Job')
+      this.$router.push({ path: '/parent/newjob/' })
+    },
+    EditJob (job) {
+      this.$router.push({ path: `/parent/jobs/editjob/${job.id}` })
     },
     jobDaysOld (startDate) {
       const today = new Date()
@@ -98,11 +100,6 @@ export default {
       } else {
         return 'This Job is ' + daysOld + ' days old'
       }
-    }
-  },
-  filters: {
-    displayDate (value) {
-      return date.formatDate(value.toDate(), 'MMMM DD, YYYY')
     }
   }
 }

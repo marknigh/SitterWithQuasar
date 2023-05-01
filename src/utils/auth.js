@@ -28,7 +28,7 @@ function loginUserAuthFacebook () {
 }
 
 async function getUserData (id) {
-  console.log('getUserData: ', id)
+  ('getUserData: ', id)
   const docRef = doc(db, 'id', id)
   return getDoc(docRef)
 }

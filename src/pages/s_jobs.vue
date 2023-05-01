@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <q-item v-for="job in filterJobs" :key="job.id" clickable @click.native="viewJob(job)">
+      <q-item v-for="job in filterJobs" :key="job.id" clickable @click="viewJob(job)">
 
         <q-item-section>
           <parent-name :parentID="job.parentID" />
@@ -30,7 +30,7 @@
         </q-item-section>
 
         <q-item-section side top>
-          <q-item-label> {{ job.startDate | displayDate }} </q-item-label>
+          <q-item-label> {{ displayDate(job.startDate) }} </q-item-label>
           <q-item-label caption> Applied: {{ job.applied ? job.applied.length : 0 }} <q-icon v-if="job.awarded" color="yellow" name="eva-award"/> </q-item-label>
         </q-item-section>
 
@@ -77,17 +77,15 @@ export default {
     this.isLoading = false
   },
   methods: {
+    displayDate (value) {
+      return date.formatDate(value.toDate(), 'MMMM DD, YYYY')
+    },
     viewJob (job) {
       if (job.awarded === this.sitterKey) {
         this.$router.push({ name: 'viewAwardedJob', params: { id: job.id } })
       } else {
         this.$router.push({ name: 'viewJob', params: { id: job.id } })
       }
-    }
-  },
-  filters: {
-    displayDate (value) {
-      return date.formatDate(value.toDate(), 'MMMM DD, YYYY')
     }
   },
   computed: {

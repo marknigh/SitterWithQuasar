@@ -17,7 +17,7 @@ export default {
     loginWithGoogle () {
       this.loading = true
       cfaSignIn('google.com').subscribe((user) => {
-        console.log('user:', user)
+        ('user:', user)
         getUserData(user.uid).then((doc) => {
           if (!doc.exists) {
             this.$q.localStorage.set('reg_email', user.email)

@@ -42,14 +42,13 @@ export default {
   methods: {
     launchPicker () {
       if (this.$q.platform.is.mobile) {
-        console.log(this.$q)
         this.capturePic()
       } else {
         this.$refs.file.click()
       }
     },
     // async capturePic () {
-    //   console.log('capturePic')
+    //   ('capturePic')
     //   const image = await Camera.getPhoto({
     //     quality: 50,
     //     resultType: CameraResultType.DataUrl,
@@ -59,9 +58,9 @@ export default {
     //   // You can access the original file using image.path, which can be
     //   // passed to the Filesystem API to read the raw data of the image,
     //   // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-    //   console.log('image.base64String: ', image)
+    //   ('image.base64String: ', image)
     //   let file = image.dataUrl
-    //   console.log('file: ', file)
+    //   ('file: ', file)
     //   var storageRef = storage.ref()
     //   var imageRef = storageRef.child('userImages/' + this.$store.getters.getKey)
     //   imageRef.putString(file, 'data_url', { contentType: 'image/jpg' }).then((snapshot) => {
@@ -73,13 +72,10 @@ export default {
     uploadPic (event) {
       let hex = sanitizePic(event.target.files[0]).then(() => {
         if (hex) {
-          console.log('event:', event.target.files[0])
           const imageRef = ref(storage, 'userImages/')
-          console.log('imageRef: ', imageRef)
           uploadBytes(imageRef, event.target.files[0]).then((snapshot) => {
-            console.log('snapshot: ', snapshot)
             getDownloadURL(snapshot.ref).then((downloadURL) => {
-              this.sitter.photoURL = downloadURL
+              // this.sitter.photoURL = downloadURL
             })
           })
         }

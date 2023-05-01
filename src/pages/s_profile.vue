@@ -80,10 +80,8 @@ export default {
         this.sitter.id = docSnap.id
         this.$store.commit('setCurrentLocation', 'Your Profile')
       } else {
-        console.error('No Document')
       }
     } catch (error) {
-      console.log('error: ', error)
     }
   },
   computed: {
@@ -110,7 +108,6 @@ export default {
           timeout: 1000
         })
       } catch (error) {
-        console.error(error)
       }
     }
   }

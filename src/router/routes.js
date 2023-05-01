@@ -7,10 +7,10 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') },
       { path: '/parent/sitters', component: () => import('pages/p_sitters.vue') },
       { path: '/parent/sitters/details', name: 'sitterDetails', props: true, component: () => import('pages/p_sitterdetails.vue') },
-      { path: '/parent/sitters/reviews', name: 'sitterReviews', props: true, component: () => import('pages/p_sitterReviews.vue') },
+      { path: '/parent/sitters/reviews/:id', name: 'sitterReviews', component: () => import('pages/p_sitterReviews.vue') },
       { path: '/parent/profile', component: () => import('pages/p_profile.vue') },
       { path: '/parent/jobs', component: () => import('pages/p_jobs.vue') },
-      { path: '/parent/jobs/editjob', name: 'editJob', props: true, component: () => import('pages/p_editjob.vue') },
+      { path: '/parent/jobs/editjob/:id', name: 'editJob', component: () => import('pages/p_editjob.vue') },
       { path: '/parent/newjob', component: () => import('pages/p_newjob.vue') }
     ]
   }, {
@@ -33,15 +33,8 @@ const routes = [
   { path: '/register-local-user', component: () => import('pages/RegisterLocalAuthUser') },
   { path: '/register-parent', component: () => import('pages/RegisterParent.vue') },
   { path: '/register-sitter', component: () => import('pages/RegisterSitter.vue') },
-  { path: '/privacy', component: () => import('pages/privacy.vue') }
+  { path: '/privacy', component: () => import('pages/privacy.vue') },
+  { path: '/:catchAll(.*)*', component: () => import('pages/Error404.vue') }
 ]
-
-// Always leave this as last one
-if (process.env.MODE !== 'ssr') {
-  routes.push({
-    path: '*',
-    component: () => import('pages/Error404.vue')
-  })
-}
 
 export default routes

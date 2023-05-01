@@ -2,7 +2,7 @@
 
 // Your personal API key.
 // Get it here: https://console.cloud.google.com/google/maps-apis
-const API_KEY = process.env.VUE_APP_GOOGLE_MAP_API_KEY
+const GOOGLE_API_KEY = process.env.VUE_APP_GOOGLE_MAP_API_KEY
 const CALLBACK_NAME = 'initMap'
 
 let initialized = !!window.google
@@ -33,7 +33,7 @@ export default function init () {
   const script = document.createElement('script')
   script.async = true
   script.defer = true
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=${CALLBACK_NAME}`
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&callback=${CALLBACK_NAME}`
   script.onerror = rejectInitPromise
   document.querySelector('head').appendChild(script)
 

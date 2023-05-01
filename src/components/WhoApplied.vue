@@ -47,7 +47,6 @@ export default {
         this.sitter.id = docSnap.id
         this.isLoading = false
       } catch (error) {
-        console.log('error: ', error)
       }
     }
   }

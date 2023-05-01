@@ -8,7 +8,7 @@
     </p>
     <p class="text-faded">No Reviews Have Been Written.<strong> Be the First!!</strong></p>
     <q-btn color="secondary" label="Write Review" @click="openReviewDialog()" />
-    <write-review :dialog="dialog" :sitter="sitter" @closedDialog="dialog = !dialog"/>
+    <write-review :writeReviewDialog="dialog" :sitter="sitter" @closedDialog="dialog = !dialog"/>
   </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     openReviewDialog () {
-      console.log('writeReivew')
+      ('writeReivew')
       this.dialog = true
     }
   }

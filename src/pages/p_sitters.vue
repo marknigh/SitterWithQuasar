@@ -56,7 +56,8 @@ export default {
       }
     },
     sitterDetails (sitter) {
-      this.$router.push({ name: 'sitterDetails', params: { sitter: sitter } })
+      this.$store.commit('setSitterDetails', sitter)
+      this.$router.push({ name: 'sitterDetails' })
     }
   }
 }
