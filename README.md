@@ -1,6 +1,6 @@
-# Ste. Gen Sitter
+# Sitter with Quasar
 
-Ste. Gen Sitter is a Vue.js + Capacitor Application
+SPA with Vue2/Vuex4 and Vue-Router. Using Quasar v2 for frontend UI
 
 ## Usage
 
