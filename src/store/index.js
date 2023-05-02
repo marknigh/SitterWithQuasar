@@ -8,7 +8,8 @@ const store = createStore({
     type: null,
     currentUser: {},
     currentLocation: '',
-    sitterDetails: {}
+    sitterDetails: {},
+    parentDetails: {}
   },
   mutations: {
     clearUser (state) {
@@ -31,6 +32,12 @@ const store = createStore({
     },
     setSitterDetails (state, payload) {
       state.sitterDetails = payload
+    },
+    setParentDetails (state, payload) {
+      state.parentDetails = payload
+    },
+    setSitterPhoto (state, payload) {
+      state.currentUser.photoURL = payload
     }
   },
   getters: {
@@ -51,6 +58,9 @@ const store = createStore({
     },
     getSitterDetails: state => {
       return (state.sitterDetails)
+    },
+    getParentDetails: state => {
+      return (state.parentDetails)
     }
   },
   plugins: [createPersistedState()]

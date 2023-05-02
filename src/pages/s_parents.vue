@@ -55,7 +55,8 @@ export default {
       return date.formatDate(new Date(value.seconds * 1000), 'MMMM DD, YYYY')
     },
     viewParent (parent) {
-      this.$router.push({ name: 'viewParent', params: { parent: parent } })
+      this.$store.commit('setParentDetails', parent)
+      this.$router.push({ path: '/sitter/parents/details' })
     }
   }
 }

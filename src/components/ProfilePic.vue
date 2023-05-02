@@ -18,9 +18,10 @@
 
 <script>
 // import { Plugins, CameraResultType, CameraSource } from '@capacitor/core'
-import { storage } from '../boot/firebase'
+import { storage, db } from '../boot/firebase'
 import { sanitizePic } from '../utils/misc'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { updateDoc, doc } from 'firebase/firestore'
 // const { Camera } = Plugins
 
 export default {
@@ -70,15 +71,17 @@ export default {
     //   })
     // },
     uploadPic (event) {
-      let hex = sanitizePic(event.target.files[0]).then(() => {
-        if (hex) {
-          const imageRef = ref(storage, 'userImages/')
-          uploadBytes(imageRef, event.target.files[0]).then((snapshot) => {
-            getDownloadURL(snapshot.ref).then((downloadURL) => {
-              // this.sitter.photoURL = downloadURL
+      sanitizePic(event.target.files[0]).then(() => {
+        const imageRef = storageRef(storage, 'userImages/' + this.sitter.id)
+        uploadBytes(imageRef, event.target.files[0]).then(() => {
+          getDownloadURL(imageRef).then((downloadURL) => {
+            const userRef = doc(db, 'Users', this.sitter.id)
+            updateDoc(userRef, { photoURL: downloadURL }).then(() => {
+              this.$store.commit('setSitterPhoto', downloadURL)
+              this.$emit('updatePhotoUrl', downloadURL)
             })
           })
-        }
+        })
       }).catch(() => {
         this.$q.notify({
           message: 'Wrong File Type',

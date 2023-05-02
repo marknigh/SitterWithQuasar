@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
 
-    <profile-pic :sitter="sitter"/>
+    <profile-pic :sitter="sitter" @updatePhotoUrl="updatePhoto" />
     <q-input v-model="sitter.email" label="Username" disable/>
     <q-input v-model="sitter.name" label="Full Name" />
     <q-input v-model="sitter.address" label="Address" />
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc, onSnapshot } from 'firebase/firestore'
 import { db } from '../boot/firebase'
 import { date } from 'quasar'
 import ProfilePic from '../components/ProfilePic'
@@ -70,19 +70,12 @@ export default {
   components: {
     'profile-pic': ProfilePic
   },
-  async created () {
-    try {
-      let docRef = doc(db, 'Users', this.$store.getters.getKey)
-      let docSnap = await getDoc(docRef)
-
-      if (docSnap.exists()) {
-        this.sitter = docSnap.data()
-        this.sitter.id = docSnap.id
-        this.$store.commit('setCurrentLocation', 'Your Profile')
-      } else {
-      }
-    } catch (error) {
-    }
+  created () {
+    const docRef = doc(db, 'Users', this.$store.getters.getKey)
+    onSnapshot(docRef, (doc) => {
+      this.sitter = { id: doc.id, ...doc.data() }
+      this.$store.commit('setCurrentLocation', 'Your Profile')
+    })
   },
   computed: {
     sDate () {
@@ -109,6 +102,9 @@ export default {
         })
       } catch (error) {
       }
+    },
+    updatePhoto (downloadURL) {
+      this.$store.commit('setSitterPhoto', downloadURL)
     }
   }
 }

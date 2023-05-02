@@ -23,6 +23,7 @@ function sanitizePic (file) {
         bytes.push(byte.toString(16))
       })
       let hex = bytes.join('').toUpperCase()
+      console.log(hex)
       switch (hex) {
         case '89504E47':
           return resolve(true)
