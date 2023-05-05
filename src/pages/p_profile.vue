@@ -6,6 +6,7 @@
     <q-input v-model="profile.city" label="City" />
     <q-input v-model="profile.state" label="State" />
     <q-input v-model="profile.zip" label="Zip" />
+    <q-input v-model="profile.phone" label="Phone Number" mask="(###) ###-####" fill-mask unmasked-value />
 
     <div class="q-pa-md justify-around">
       <q-toggle v-model="profile.baby" label="Baby"/>
